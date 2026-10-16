@@ -1,0 +1,33 @@
+{
+  "name": "sg-neo-theme",
+  "displayName": "SG Neo",
+  "description": "SG Neo is a neon-on-black minimal theme (matrix green, cyan, hot pink, gold), ported from the SG Neo Notepad++ theme. Licensed under GNU GPL v3. Download: https://sg-neo.sgdev.qd.je",
+  "version": "1.0.0",
+  "publisher": "sgdev",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "theme",
+    "dark",
+    "neon",
+    "matrix",
+    "minimal",
+    "sg neo"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "SG Neo",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sg-neo-color-theme.json"
+      }
+    ]
+  },
+  "icon": "icon.png",
+  "license": "GPL-3.0-only",
+  "homepage": "https://sg-neo.sgdev.qd.je"
+}
