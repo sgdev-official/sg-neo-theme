@@ -4,7 +4,9 @@
 
 **SG Neo is a theme released under the GNU GPL v3.**
 The website that hosts it is released under the Apache License 2.0.
+
 **Download:** https://sg-neo.sgdev.qd.je
+Also available at: https://s-neo.qd.je (same website)
 
 Neon-on-black VS Code theme, ported from the **SG Neo** Notepad++ theme and trimmed down to a minimal UI.
 
@@ -53,6 +55,13 @@ Copy the `sg-neo-theme` folder to `%USERPROFILE%\.vscode\extensions\sgdev.sg-neo
 
 Everything is in `themes/sg-neo-color-theme.json`. To override one colour without editing the theme, use `workbench.colorCustomizations` and `editor.tokenColorCustomizations` in your settings under the `"[SG Neo]"` key.
 
+## Website
+
+The download website is available at two addresses. Both open the same site:
+
+- https://sg-neo.sgdev.qd.je
+- https://s-neo.qd.je
+
 ## License
 
 This repository uses two licenses:
@@ -60,8 +69,8 @@ This repository uses two licenses:
 | Part | License |
 |---|---|
 | **SG Neo theme / extension** (the theme files, `.vsix` and logo in this repository) | **GNU General Public License v3.0** (see `LICENSE`) |
-| **Website** ([sg-neo.sgdev.qd.je](https://sg-neo.sgdev.qd.je)) | **Apache License 2.0** |
+| **Website** (sg-neo.sgdev.qd.je / s-neo.qd.je) | **Apache License 2.0** |
 
 The theme is free software under the GNU GPL v3. The website that hosts the downloads is a separate project, licensed under Apache 2.0, and its license does not apply to the theme.
 
-Website and downloads:
+Website and downloads: https://sg-neo.sgdev.qd.je (also https://s-neo.qd.je)
