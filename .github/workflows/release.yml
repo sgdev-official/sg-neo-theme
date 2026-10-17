@@ -1,0 +1,28 @@
+name: Publish Extension to Open VSX
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/node-github-action@v4
+        with:
+          node-version: '20'
+
+      - name: Install Ovsx
+        run: npm install -g ovsx
+
+      - name: Publish to Open VSX
+        run: ovsx publish
