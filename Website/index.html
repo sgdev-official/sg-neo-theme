@@ -270,16 +270,9 @@
 
   /* Star section */
   .star-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 56px; align-items: center; }
-  .star-box { padding: 28px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); display: grid; gap: 22px; }
-  .star-box h3 { margin: 0 0 4px; font: 700 .95rem var(--mono); }
-  .star-box p.hint { margin: 0; color: var(--muted); font-size: .9rem; }
+  .star-box { display: flex; align-items: center; justify-content: flex-start; }
+  .star-box .btn { padding: 16px 30px; font-size: 1rem; border-radius: 14px; }
   .count { margin-left: 2px; padding: 1px 9px; border-radius: 999px; background: color-mix(in srgb, var(--y-t) 20%, transparent); font-size: .76rem; }
-  .verify { display: grid; gap: 10px; padding-top: 22px; border-top: 1px solid var(--line); }
-  .verify-row { display: flex; gap: 10px; flex-wrap: wrap; }
-  .verify-row input { flex: 1; min-width: 180px; }
-  .note { margin: 0; font-size: .86rem; color: var(--muted); min-height: 1.4em; }
-  .note.ok { color: var(--g-t); }
-  .note.err { color: var(--p-t); }
   .form-col { display: grid; gap: 14px; }
   .mail-note { margin: 0; font-size: .88rem; color: var(--muted); }
   .mail-note a { color: var(--g-t); font-family: var(--mono); }
@@ -531,7 +524,7 @@
     <div class="wrap star-grid">
       <div class="section-head" style="margin-bottom:0">
         <h2>Like SG Neo? Give it a star.</h2>
-        <p>A GitHub star is free and helps other developers find the theme. Star the repo, then come back and check that it counted.</p>
+        <p>A GitHub star is free and helps other developers find the theme. It takes one click.</p>
       </div>
 
       <div class="star-box">
@@ -541,15 +534,6 @@
             Give me a star
             <span class="count" id="star-count" hidden></span>
           </a>
-        </div>
-
-        <div class="verify">
-          <label for="gh-user">Already starred? Check it with your GitHub username</label>
-          <div class="verify-row">
-            <input type="text" id="gh-user" placeholder="your-username" autocomplete="off" autocapitalize="off" spellcheck="false">
-            <button class="btn btn-c" type="button" id="gh-check">Check my star</button>
-          </div>
-          <p class="note" id="gh-status" aria-live="polite"></p>
         </div>
       </div>
     </div>
@@ -775,56 +759,6 @@
       }
     })
     .catch(function () {});
-
-  // Looks through the repo's public stargazers list (100 per page, up to 1000 stars)
-  function hasStarred(user, page) {
-    page = page || 1;
-    return fetch('https://api.github.com/repos/' + GH_REPO + '/stargazers?per_page=100&page=' + page, { headers: ghHeaders })
-      .then(function (r) {
-        if (r.status === 403 || r.status === 429) throw new Error('rate');
-        if (!r.ok) throw new Error('http');
-        return r.json();
-      })
-      .then(function (list) {
-        var found = list.some(function (u) { return u.login.toLowerCase() === user.toLowerCase(); });
-        if (found) return true;
-        if (list.length < 100) return false;
-        if (page >= 10) return null;
-        return hasStarred(user, page + 1);
-      });
-  }
-
-  var ghInput = document.getElementById('gh-user');
-  var ghBtn = document.getElementById('gh-check');
-  var ghStatus = document.getElementById('gh-status');
-  function ghNote(cls, text) { ghStatus.className = 'note ' + cls; ghStatus.textContent = text; }
-
-  function checkStar() {
-    var user = ghInput.value.trim().replace(/^@/, '');
-    if (!/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(user)) {
-      ghNote('err', 'Please enter a valid GitHub username.');
-      ghInput.focus();
-      return;
-    }
-    ghBtn.disabled = true;
-    ghNote('', 'Checking...');
-    hasStarred(user).then(function (res) {
-      if (res === true) {
-        ghNote('ok', 'Verified. Thank you for the star, @' + user + '!');
-        toast('Star verified');
-      } else if (res === false) {
-        ghNote('err', 'No star from @' + user + ' yet. Click "Give me a star", star the repo on GitHub, wait a few seconds and check again.');
-      } else {
-        ghNote('err', 'This repo has too many stars to check from the page. Look for your name in the stargazers list on GitHub.');
-      }
-    }).catch(function (err) {
-      ghNote('err', err && err.message === 'rate'
-        ? 'GitHub is limiting requests right now. Please try again in a few minutes.'
-        : 'Could not reach GitHub. Please try again.');
-    }).then(function () { ghBtn.disabled = false; });
-  }
-  ghBtn.addEventListener('click', checkStar);
-  ghInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); checkStar(); } });
 </script>
 </body>
 </html>
