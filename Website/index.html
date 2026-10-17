@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SG Neo Theme | Official sgdev Theme for VS Code & Notepad++</title>
-    <!-- Favicon link pointing to favicon.svg as requested -->
+    <!-- Favicon link pointing to favicon.svg -->
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font -->
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -42,6 +43,37 @@
             background-color: #0A0A0A;
             color: #E0E0E0;
             font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Light Mode Contrast Fixes */
+        body.light-mode {
+            background-color: #F4F4F5 !important;
+            color: #18181B !important;
+        }
+
+        body.light-mode .scanlines {
+            background: none !important;
+        }
+
+        body.light-mode .bg-neoCard {
+            background-color: #FFFFFF !important;
+            border-color: #E4E4E7 !important;
+            color: #18181B !important;
+        }
+
+        body.light-mode .text-gray-400, 
+        body.light-mode .text-gray-300 {
+            color: #52525B !important;
+        }
+
+        body.light-mode .text-white {
+            color: #09090B !important;
+        }
+
+        body.light-mode header {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            border-color: #E4E4E7 !important;
         }
 
         .glow-green {
@@ -52,14 +84,6 @@
             box-shadow: 0 0 15px rgba(0, 255, 65, 0.25), inset 0 0 15px rgba(0, 255, 65, 0.1);
         }
 
-        .glow-box-pink {
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.25);
-        }
-
-        .glow-box-cyan {
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
-        }
-
         .cyber-border {
             border: 1px solid rgba(0, 255, 65, 0.3);
             transition: all 0.3s ease;
@@ -68,11 +92,6 @@
         .cyber-border:hover {
             border-color: #00FF41;
             box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
-        }
-
-        .glitch-N {
-            position: relative;
-            display: inline-block;
         }
 
         /* Scanline Background Overlay */
@@ -89,7 +108,6 @@
             background-size: 100% 4px, 6px 100%;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -102,12 +120,12 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between scanlines selection:bg-neoGreen selection:text-black">
+<body id="body-root" class="min-h-screen flex flex-col justify-between scanlines selection:bg-neoGreen selection:text-black">
 
     <!-- Toast Notification for Copy -->
     <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-150%] opacity-0 transition-all duration-300 bg-neoCard border border-neoGreen text-neoGreen px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3">
         <i class="fa-solid fa-circle-check text-xl"></i>
-        <span id="toast-msg" class="font-mono text-sm font-semibold">Command Copied!</span>
+        <span id="toast-msg" class="font-mono text-sm font-semibold">Copied to Clipboard!</span>
     </div>
 
     <!-- Navigation Header -->
@@ -130,14 +148,20 @@
                 <a href="#features" class="hover:text-neoGreen transition-colors">Features</a>
                 <a href="#downloads" class="hover:text-neoGreen transition-colors">Downloads</a>
                 <a href="#code-structure" class="hover:text-neoGreen transition-colors">Code Specs</a>
-                <a href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" class="text-neoCyan hover:underline flex items-center gap-1.5">
-                    <span>Open VSX</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                <a href="https://vs-11.sgdev.qd.je" target="_blank" class="text-neoGreen hover:underline flex items-center gap-1.5 font-bold">
+                    <i class="fa-solid fa-store"></i>
+                    <span>VS Code Store</span>
                 </a>
             </nav>
 
-            <!-- Action Button -->
-            <div>
+            <!-- Theme Toggle & Action Button -->
+            <div class="flex items-center gap-4">
+                <!-- Theme Mode Toggle Button -->
+                <button onclick="toggleThemeMode()" id="theme-btn" class="p-2.5 rounded-lg bg-white/5 border border-white/10 hover:border-neoGreen text-neoCyan transition-all flex items-center gap-2 text-xs font-mono">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
+                    <span id="theme-text" class="hidden sm:inline">Cyber Dark</span>
+                </button>
+
                 <a href="#downloads" class="px-5 py-2.5 rounded-lg bg-neoGreen text-black font-bold text-sm hover:bg-emerald-400 transition-all duration-200 shadow-lg shadow-neoGreen/20 flex items-center gap-2">
                     <i class="fa-solid fa-download"></i>
                     <span>Get SG Neo</span>
@@ -149,23 +173,18 @@
     <!-- Main Hero Section -->
     <main class="flex-grow">
         <section class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden">
-            <!-- Background Glow Orbs -->
-            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-neoGreen/10 rounded-full blur-[120px] pointer-events-none"></div>
-            <div class="absolute bottom-10 right-10 w-72 h-72 bg-neoPink/10 rounded-full blur-[100px] pointer-events-none"></div>
-
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                 
                 <!-- Availability Badge -->
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neoGreen/10 border border-neoGreen/30 text-neoGreen font-mono text-xs md:text-sm mb-8 animate-pulse">
                     <i class="fa-solid fa-bolt"></i>
-                    <span>It's also available for VSCodium & VS Code</span>
+                    <span>Live on Official VS Code Marketplace & Open VSX</span>
                 </div>
 
                 <!-- Main Cyberpunk Theme Icon Preview -->
                 <div class="mx-auto w-28 h-28 md:w-36 md:h-36 bg-black rounded-3xl border-2 border-neoGreen flex flex-col items-center justify-center glow-box-green mb-8 relative group cursor-pointer transition-transform hover:scale-105">
                     <div class="text-6xl md:text-7xl font-extrabold font-mono text-neoGreen glow-green tracking-tighter relative">
                         N
-                        <!-- Glitch Shift Simulation -->
                         <span class="absolute top-0 left-[-3px] text-neoCyan opacity-70 -z-10">N</span>
                         <span class="absolute top-0 left-[3px] text-neoPink opacity-70 -z-10">N</span>
                     </div>
@@ -177,44 +196,53 @@
                     SG <span class="text-neoGreen glow-green">NEO</span> THEME
                 </h1>
                 <p class="max-w-2xl mx-auto text-gray-400 text-base sm:text-lg mb-10 leading-relaxed">
-                    A high-performance, minimalist cyberpunk neon-on-black theme. Specially crafted for night coders, hackers, and developers seeking optimal visual clarity and zero eye strain.
+                    A high-performance, minimalist cyberpunk neon-on-black theme. Specially crafted for night coders, hackers, and developers.
                 </p>
+
+                <!-- Install from VS Code Button -->
+                <div class="mb-8 flex justify-center">
+                    <a href="https://vs-11.sgdev.qd.je" target="_blank" rel="noopener" class="px-8 py-4 rounded-xl bg-neoGreen text-black font-mono font-extrabold text-base sm:text-lg hover:bg-emerald-400 hover:scale-105 transition-all duration-200 shadow-lg shadow-neoGreen/30 glow-box-green flex items-center gap-3">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <span>Install from VS Code</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                    </a>
+                </div>
 
                 <!-- Quick Terminal Copy Command -->
                 <div class="max-w-xl mx-auto mb-12 bg-neoCard border border-white/10 rounded-xl p-3 flex items-center justify-between font-mono text-xs sm:text-sm shadow-2xl">
                     <div class="flex items-center space-x-3 overflow-x-auto text-gray-300 pl-2">
                         <span class="text-neoGreen">$</span>
-                        <span class="whitespace-nowrap">ovsx publish my-extension.vsix -p &lt;token&gt;</span>
+                        <span class="whitespace-nowrap">vs-11.sgdev.qd.je</span>
                     </div>
-                    <button onclick="copyCommand('ovsx install sgdev.sg-neo-theme')" class="ml-3 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-neoCyan border border-neoCyan/30 rounded-lg transition-colors flex items-center gap-1.5 shrink-0">
+                    <button onclick="copyCommand('https://vs-11.sgdev.qd.je')" class="ml-3 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-neoCyan border border-neoCyan/30 rounded-lg transition-colors flex items-center gap-1.5 shrink-0">
                         <i class="fa-regular fa-copy"></i>
-                        <span>Copy Install</span>
+                        <span>Copy Link</span>
                     </button>
                 </div>
 
                 <!-- Download Buttons Grid -->
-                <div id="downloads" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-6">
+                <div id="downloads" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto pt-6">
                     
-                    <!-- 1. VS Code .vsix Download -->
-                    <div class="bg-neoCard rounded-2xl p-6 cyber-border text-left flex flex-col justify-between relative group">
+                    <!-- 1. Official VS Code Marketplace Link -->
+                    <div class="bg-neoCard rounded-2xl p-6 cyber-border text-left flex flex-col justify-between relative group shadow-xl">
                         <div class="absolute -top-3 right-4 bg-neoGreen text-black font-bold font-mono text-[10px] px-2.5 py-0.5 rounded-full uppercase">
-                            VS Code / VSCodium
+                            Official Store
                         </div>
                         <div>
                             <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center text-2xl mb-4">
-                                <i class="fa-solid fa-code"></i>
+                                <i class="fa-solid fa-store"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-white mb-2 font-mono">VS Code Theme</h3>
-                            <p class="text-gray-400 text-xs mb-6">Official VSIX package for Visual Studio Code and VSCodium IDEs.</p>
+                            <h3 class="text-xl font-bold text-white mb-2 font-mono">VS Code Marketplace</h3>
+                            <p class="text-gray-400 text-xs mb-6">Direct shortcut link to the official Microsoft Visual Studio Code Marketplace.</p>
                         </div>
-                        <a href="sg-neo-theme-1.0.0.vsix" download class="w-full py-3 bg-neoGreen/10 hover:bg-neoGreen text-neoGreen hover:text-black border border-neoGreen/40 rounded-xl font-mono text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-download"></i>
-                            <span>Download .vsix</span>
+                        <a href="https://vs-11.sgdev.qd.je" target="_blank" class="w-full py-3 bg-neoGreen/10 hover:bg-neoGreen text-neoGreen hover:text-black border border-neoGreen/40 rounded-xl font-mono text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>vs-11.sgdev.qd.je</span>
                         </a>
                     </div>
 
                     <!-- 2. Notepad++ .xml Download -->
-                    <div class="bg-neoCard rounded-2xl p-6 cyber-border text-left flex flex-col justify-between relative group">
+                    <div class="bg-neoCard rounded-2xl p-6 cyber-border text-left flex flex-col justify-between relative group shadow-xl">
                         <div class="absolute -top-3 right-4 bg-neoCyan text-black font-bold font-mono text-[10px] px-2.5 py-0.5 rounded-full uppercase">
                             Notepad++
                         </div>
@@ -232,7 +260,7 @@
                     </div>
 
                     <!-- 3. Open VSX Button -->
-                    <div class="bg-neoCard rounded-2xl p-6 cyber-border text-left flex flex-col justify-between relative group">
+                    <div class="bg-neoCard rounded-2xl p-6 cyber-border text-left flex flex-col justify-between relative group shadow-xl">
                         <div class="absolute -top-3 right-4 bg-neoPink text-white font-bold font-mono text-[10px] px-2.5 py-0.5 rounded-full uppercase">
                             Open Registry
                         </div>
@@ -241,11 +269,11 @@
                                 <i class="fa-solid fa-globe"></i>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-2 font-mono">Open VSX Registry</h3>
-                            <p class="text-gray-400 text-xs mb-6">View, rate, and install directly from open-vsx.org public extensions registry.</p>
+                            <p class="text-gray-400 text-xs mb-6">View, rate, and install directly for VSCodium, Gitpod & Open-Source IDEs.</p>
                         </div>
                         <a href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" class="w-full py-3 bg-neoPink/10 hover:bg-neoPink text-neoPink hover:text-white border border-neoPink/40 rounded-xl font-mono text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            <span>View on Open VSX</span>
+                            <span>View Open VSX</span>
                         </a>
                     </div>
 
@@ -263,35 +291,31 @@
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                    <!-- Background -->
                     <div class="bg-neoCard p-5 rounded-xl border border-white/10 text-center">
                         <div class="w-12 h-12 rounded-lg bg-[#0A0A0A] border border-white/20 mx-auto mb-3 shadow-inner"></div>
                         <span class="block text-xs text-gray-400 font-mono">Background</span>
                         <span class="block text-sm font-bold text-white font-mono mt-1">#0A0A0A</span>
                     </div>
-                    <!-- Matrix Green -->
                     <div class="bg-neoCard p-5 rounded-xl border border-white/10 text-center">
                         <div class="w-12 h-12 rounded-lg bg-[#00FF41] mx-auto mb-3 shadow-lg shadow-neoGreen/30"></div>
                         <span class="block text-xs text-gray-400 font-mono">Main Text</span>
                         <span class="block text-sm font-bold text-neoGreen font-mono mt-1">#00FF41</span>
                     </div>
-                    <!-- Cyan -->
                     <div class="bg-neoCard p-5 rounded-xl border border-white/10 text-center">
                         <div class="w-12 h-12 rounded-lg bg-[#00E5FF] mx-auto mb-3 shadow-lg shadow-neoCyan/30"></div>
                         <span class="block text-xs text-gray-400 font-mono">Numbers / Lines</span>
                         <span class="block text-sm font-bold text-neoCyan font-mono mt-1">#00E5FF</span>
                     </div>
-                    <!-- Hot Pink -->
                     <div class="bg-neoCard p-5 rounded-xl border border-white/10 text-center">
                         <div class="w-12 h-12 rounded-lg bg-[#FF007F] mx-auto mb-3 shadow-lg shadow-neoPink/30"></div>
-                        <span class="block text-xs text-gray-400 font-mono">Brackets / Keywords</span>
+                        <span class="block text-xs text-gray-400 font-mono">Keywords</span>
                         <span class="block text-sm font-bold text-neoPink font-mono mt-1">#FF007F</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Code Structures / Modular Architecture Tabs Section -->
+        <!-- Code Structure Tabs Section -->
         <section id="code-structure" class="py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-extrabold text-white font-mono">PROJECT <span class="text-neoGreen">STRUCTURE</span> & SPECS</h2>
@@ -311,14 +335,10 @@
                     <button onclick="switchTab('js')" id="tab-btn-js" class="px-6 py-4 text-xs font-mono font-bold text-gray-400 border-b-2 border-transparent hover:text-white flex items-center gap-2">
                         <i class="fa-brands fa-js text-yellow-400"></i> script.js
                     </button>
-                    <button onclick="switchTab('svg')" id="tab-btn-svg" class="px-6 py-4 text-xs font-mono font-bold text-gray-400 border-b-2 border-transparent hover:text-white flex items-center gap-2">
-                        <i class="fa-solid fa-vector-square text-neoPink"></i> favicon.svg
-                    </button>
                 </div>
 
                 <!-- Tab Contents -->
-                <div class="p-6 font-mono text-xs md:text-sm text-gray-300 bg-[#0A0A0A] overflow-x-auto min-h-[220px]">
-                    <!-- HTML TAB -->
+                <div class="p-6 font-mono text-xs md:text-sm text-gray-300 bg-[#0A0A0A] overflow-x-auto min-h-[200px]">
                     <div id="tab-content-html" class="block">
                         <pre class="text-neoGreen"><code>&lt;!-- SG Neo Web Landing Structure --&gt;
 &lt;!DOCTYPE html&gt;
@@ -327,16 +347,13 @@
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;SG Neo Theme&lt;/title&gt;
     &lt;link rel="icon" href="favicon.svg" type="image/svg+xml"&gt;
-    &lt;link rel="stylesheet" href="style.css"&gt;
 &lt;/head&gt;
 &lt;body class="bg-neoBlack text-neoGreen"&gt;
-    &lt;!-- Managed via sgdev official repository --&gt;
-    &lt;script src="script.js"&gt;&lt;/script&gt;
+    &lt;!-- Official Marketplace: https://vs-11.sgdev.qd.je --&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
                     </div>
 
-                    <!-- CSS TAB -->
                     <div id="tab-content-css" class="hidden">
                         <pre class="text-neoCyan"><code>/* style.css - SG Neo Cyberpunk Palette */
 :root {
@@ -344,106 +361,89 @@
     --neon-green: #00FF41;
     --neon-cyan: #00E5FF;
     --neon-pink: #FF007F;
-}
-
-body {
-    background-color: var(--bg-dark);
-    color: var(--neon-green);
-    font-family: 'Fira Code', monospace;
 }</code></pre>
                     </div>
 
-                    <!-- JS TAB -->
                     <div id="tab-content-js" class="hidden">
-                        <pre class="text-neoPink"><code>// script.js - SG Neo Interactive Controller
-console.log("SG Neo Theme System Loaded...");
-
+                        <pre class="text-neoPink"><code>// script.js - Clipboard & UI Actions
 function copyCommand(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        alert("Copied to clipboard!");
-    });
+    navigator.clipboard.writeText(text);
+    showToast('Copied: ' + text);
 }</code></pre>
-                    </div>
-
-                    <!-- SVG TAB -->
-                    <div id="tab-content-svg" class="hidden">
-                        <pre class="text-neoGold"><code>&lt;!-- favicon.svg --&gt;
-&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"&gt;
-    &lt;rect width="100" height="100" rx="20" fill="#0A0A0A"/&gt;
-    &lt;text x="50%" y="65%" font-family="monospace" font-weight="bold" 
-          font-size="65" fill="#00FF41" text-anchor="middle"&gt;N&lt;/text&gt;
-    &lt;line x1="25" y1="80" x2="75" y2="80" stroke="#00E5FF" stroke-width="6"/&gt;
-&lt;/svg&gt;</code></pre>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-black/80 py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:flex md:items-center md:justify-between">
-            <div class="mb-4 md:mb-0">
-                <p class="font-mono text-xs text-gray-400">
-                    &copy; 2026 || Created by <span class="text-neoGreen font-bold">sgdev</span> / Shubhomoy
-                </p>
-                <p class="text-[11px] text-gray-500 mt-1 font-mono">Released under GNU GPL v3 License</p>
+    <!-- Footer Section -->
+    <footer class="border-t border-white/10 bg-black/80 py-8 text-center text-xs font-mono text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                © 2026 || Created by <a href="https://sgdev.qd.je" class="text-neoGreen hover:underline">sgdev / Shubhomoy</a>
             </div>
-
-            <!-- Contact Mail -->
-            <div class="flex items-center justify-center space-x-2 font-mono text-xs text-gray-300">
-                <i class="fa-solid fa-envelope text-neoCyan"></i>
-                <span>Contact:</span>
-                <a href="mailto:info@sgdev.qd.je" class="text-neoGreen hover:underline">info@sgdev.qd.je</a>
+            <div class="flex items-center space-x-6">
+                <a href="https://vs-11.sgdev.qd.je" target="_blank" class="hover:text-neoGreen">VS Code Store</a>
+                <a href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" class="hover:text-neoCyan">Open VSX</a>
+                <a href="info@sgdev.qd.je" class="hover:text-neoPink">Contact</a>
             </div>
         </div>
     </footer>
 
-    <!-- Interactive Script JS Logic -->
+    <!-- Interactive JavaScript -->
     <script>
-        // Tab Switcher Logic
+        // Copy Command Function
+        function copyCommand(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                const toastMsg = document.getElementById('toast-msg');
+                toastMsg.innerText = "Copied to Clipboard!";
+                toast.classList.remove('translate-y-[-150%]', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                    toast.classList.add('translate-y-[-150%]', 'opacity-0');
+                }, 2500);
+            });
+        }
+
+        // Code Tabs Switcher
         function switchTab(tab) {
-            const tabs = ['html', 'css', 'js', 'svg'];
-            tabs.forEach(t => {
+            ['html', 'css', 'js'].forEach(t => {
                 const content = document.getElementById(`tab-content-${t}`);
                 const btn = document.getElementById(`tab-btn-${t}`);
-                
-                if (t === tab) {
-                    content.classList.remove('hidden');
-                    content.classList.add('block');
-                    btn.classList.add('text-neoGreen', 'border-neoGreen', 'bg-white/5');
-                    btn.classList.remove('text-gray-400', 'border-transparent');
-                } else {
-                    content.classList.remove('block');
+                if (content && btn) {
                     content.classList.add('hidden');
                     btn.classList.remove('text-neoGreen', 'border-neoGreen', 'bg-white/5');
                     btn.classList.add('text-gray-400', 'border-transparent');
                 }
             });
+
+            const activeContent = document.getElementById(`tab-content-${tab}`);
+            const activeBtn = document.getElementById(`tab-btn-${tab}`);
+            if (activeContent && activeBtn) {
+                activeContent.classList.remove('hidden');
+                activeBtn.classList.add('text-neoGreen', 'border-neoGreen', 'bg-white/5');
+                activeBtn.classList.remove('text-gray-400', 'border-transparent');
+            }
         }
 
-        // Copy Command Function with Custom Toast
-        function copyCommand(text) {
-            // Fallback execCommand clipboard support
-            const dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
+        // Dark / Light Theme Mode Toggle
+        function toggleThemeMode() {
+            const body = document.getElementById('body-root');
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
 
-            // Show Toast
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-msg');
-            toastMsg.innerText = `Copied: "${text}"`;
-            
-            toast.classList.remove('translate-y-[-150%]', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
+            body.classList.toggle('light-mode');
 
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-[-150%]', 'opacity-0');
-            }, 3000);
+            if (body.classList.contains('light-mode')) {
+                icon.className = 'fa-solid fa-sun text-yellow-500';
+                text.innerText = 'Cyber Light';
+            } else {
+                icon.className = 'fa-solid fa-moon text-neoCyan';
+                text.innerText = 'Cyber Dark';
+            }
         }
     </script>
 </body>
