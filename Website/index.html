@@ -661,6 +661,7 @@
 
   // Contact form: sends through Web3Forms (no email app needed)
   var TO = 'info@sgdev.qd.je';
+  var THANKS_URL = './websit/thanks.html'; // page shown after a successful send
   var form = document.getElementById('contact-form');
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -682,6 +683,7 @@
 
     document.getElementById('f-subject').value = '[SG Neo] ' + document.getElementById('f-topic').value + ' from ' + name.value.trim();
 
+    var redirecting = false;
     var label = btn.lastChild;
     var original = label.textContent;
     btn.disabled = true;
@@ -693,16 +695,21 @@
       .then(function (res) { return res.json(); })
       .then(function (data) {
         if (data && data.success) {
+          var who = name.value.trim();
           form.reset();
+          redirecting = true;
           status.className = 'ok';
-          status.textContent = 'Message sent. Thank you, I will reply by email.';
+          status.textContent = 'Message sent. Taking you to the thank you page...';
           toast('Message sent');
+          setTimeout(function () {
+            window.location.href = THANKS_URL + '?name=' + encodeURIComponent(who);
+          }, 900);
         } else {
           fail((data && data.message ? data.message : 'Something went wrong.') + ' You can also email ' + TO + '.');
         }
       })
       .catch(function () { fail('Could not reach the server. Check your connection or email ' + TO + '.'); })
-      .then(function () { btn.disabled = false; label.textContent = original; });
+      .then(function () { if (!redirecting) { btn.disabled = false; label.textContent = original; } });
   });
 </script>
 </body>
