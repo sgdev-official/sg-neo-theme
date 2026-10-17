@@ -268,6 +268,22 @@
   #form-status.err { color: var(--p-t); }
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
+  /* Star section */
+  .star-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 56px; align-items: center; }
+  .star-box { padding: 28px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); display: grid; gap: 22px; }
+  .star-box h3 { margin: 0 0 4px; font: 700 .95rem var(--mono); }
+  .star-box p.hint { margin: 0; color: var(--muted); font-size: .9rem; }
+  .count { margin-left: 2px; padding: 1px 9px; border-radius: 999px; background: color-mix(in srgb, var(--y-t) 20%, transparent); font-size: .76rem; }
+  .verify { display: grid; gap: 10px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .verify-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .verify-row input { flex: 1; min-width: 180px; }
+  .note { margin: 0; font-size: .86rem; color: var(--muted); min-height: 1.4em; }
+  .note.ok { color: var(--g-t); }
+  .note.err { color: var(--p-t); }
+  .form-col { display: grid; gap: 14px; }
+  .mail-note { margin: 0; font-size: .88rem; color: var(--muted); }
+  .mail-note a { color: var(--g-t); font-family: var(--mono); }
+
   /* ---------- Footer ---------- */
   footer { border-top: 1px solid var(--line); padding: 32px 0; font: .8rem var(--mono); color: var(--muted); }
   footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
@@ -286,9 +302,9 @@
   /* ---------- Responsive ---------- */
   @media (max-width: 880px) {
     .hero { padding: 48px 0 64px; }
-    .hero-grid, .panel, .contact-grid { grid-template-columns: 1fr; }
+    .hero-grid, .panel, .contact-grid, .star-grid { grid-template-columns: 1fr; }
     .hero-grid { gap: 40px; }
-    .contact-grid { gap: 36px; }
+    .contact-grid, .star-grid { gap: 36px; }
     .nav { display: none; }
     .brand-sub { display: none; }
     .section { padding: 64px 0; }
@@ -365,11 +381,11 @@
           </a>
 
           <div class="hero-row">
-            <a class="btn btn-c" href="sg-neo-theme.vsix" download>
+            <a class="btn btn-c" href="https://github.com/sgdev-official/sg-neo-theme/releases#release-1.0" target="_blank" rel="noopener">
               <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>
               Install .vsix
             </a>
-            <a class="btn btn-y" href="sg-neo-theme.xml" download>
+            <a class="btn btn-y" href="https://github.com/sgdev-official/sg-neo-theme/releases#release-1.0" target="_blank" rel="noopener">
               <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5zM14 3v5h5M9 13h6M9 17h6"/></svg>
               Install for Notepad++
             </a>
@@ -465,13 +481,13 @@
       <!-- .vsix -->
       <div class="panel" id="panel-vsix" role="tabpanel" aria-labelledby="tab-vsix" hidden>
         <ol class="steps">
-          <li><p>Download <span style="font-family:var(--mono)">sg-neo-theme.vsix</span> with the button on the right.</p></li>
+          <li><p>Open the GitHub release with the button on the right and download <span style="font-family:var(--mono)">sg-neo-theme.vsix</span> from the assets list.</p></li>
           <li><p>In VS Code open Extensions with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>X</kbd>, click the <b>&hellip;</b> menu at the top of the panel, and choose <b>Install from VSIX&hellip;</b></p></li>
           <li><p>Select the downloaded file, then pick <b>SG Neo</b> with <kbd>Ctrl</kbd> <kbd>K</kbd>, <kbd>Ctrl</kbd> <kbd>T</kbd>.</p></li>
         </ol>
         <div class="aside">
           <h3>.vsix file</h3>
-          <a class="btn btn-c" href="sg-neo-theme.vsix" download>Install .vsix</a>
+          <a class="btn btn-c" href="https://github.com/sgdev-official/sg-neo-theme/releases#release-1.0" target="_blank" rel="noopener">Install .vsix</a>
           <p>Prefer the terminal? Run this in the folder with the file:</p>
           <div class="cmd">
             <code>code --install-extension sg-neo-theme.vsix</code>
@@ -483,14 +499,14 @@
       <!-- Notepad++ -->
       <div class="panel" id="panel-npp" role="tabpanel" aria-labelledby="tab-npp" hidden>
         <ol class="steps">
-          <li><p>Download <span style="font-family:var(--mono)">sg-neo-theme.xml</span> with the button on the right.</p></li>
+          <li><p>Open the GitHub release with the button on the right and download <span style="font-family:var(--mono)">sg-neo-theme.xml</span> from the assets list.</p></li>
           <li><p>Copy it into the Notepad++ <span style="font-family:var(--mono)">themes</span> folder, usually <span style="font-family:var(--mono)">%APPDATA%\Notepad++\themes</span>. Create the folder if it does not exist.</p></li>
           <li><p>Restart Notepad++, open <b>Settings</b>, then <b>Style Configurator</b>, pick <b>SG Neo</b> from the theme list and click <b>Save &amp; Close</b>.</p></li>
         </ol>
         <div class="aside">
           <h3>Notepad++ theme</h3>
           <p>One XML file. No installer needed.</p>
-          <a class="btn btn-y" href="sg-neo-theme.xml" download>Install for Notepad++</a>
+          <a class="btn btn-y" href="https://github.com/sgdev-official/sg-neo-theme/releases#release-1.0" target="_blank" rel="noopener">Install for Notepad++</a>
         </div>
       </div>
 
@@ -505,6 +521,35 @@
           <h3>Open VSX registry</h3>
           <p>For editors that do not use the Microsoft marketplace.</p>
           <a class="btn btn-p" href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" rel="noopener">View on Open VSX</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STAR ================= -->
+  <section class="section" id="star">
+    <div class="wrap star-grid">
+      <div class="section-head" style="margin-bottom:0">
+        <h2>Like SG Neo? Give it a star.</h2>
+        <p>A GitHub star is free and helps other developers find the theme. Star the repo, then come back and check that it counted.</p>
+      </div>
+
+      <div class="star-box">
+        <div>
+          <a class="btn btn-y" href="https://github.com/sgdev-official/sg-neo-theme/" target="_blank" rel="noopener">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3z"/></svg>
+            Give me a star
+            <span class="count" id="star-count" hidden></span>
+          </a>
+        </div>
+
+        <div class="verify">
+          <label for="gh-user">Already starred? Check it with your GitHub username</label>
+          <div class="verify-row">
+            <input type="text" id="gh-user" placeholder="your-username" autocomplete="off" autocapitalize="off" spellcheck="false">
+            <button class="btn btn-c" type="button" id="gh-check">Check my star</button>
+          </div>
+          <p class="note" id="gh-status" aria-live="polite"></p>
         </div>
       </div>
     </div>
@@ -548,6 +593,7 @@
         </ul>
       </div>
 
+      <div class="form-col">
       <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
         <input type="hidden" name="access_key" value="57196257-81be-4a29-b6d8-29a50fd4c781">
         <input type="hidden" name="from_name" value="SG Neo website">
@@ -580,6 +626,8 @@
           <p id="form-status" aria-live="polite"></p>
         </div>
       </form>
+      <p class="mail-note">You can also mail us manually at <a href="mailto:bug-report@sgdev.qd.je">bug-report@sgdev.qd.je</a></p>
+      </div>
 
     </div>
   </section>
@@ -592,6 +640,7 @@
     <nav aria-label="Footer">
       <a href="https://vs-11.sgdev.qd.je" target="_blank" rel="noopener">VS Code library</a>
       <a href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" rel="noopener">Open VSX</a>
+      <a href="https://github.com/sgdev-official/sg-neo-theme/" target="_blank" rel="noopener">GitHub</a>
       <a href="#contact">Contact</a>
     </nav>
   </div>
@@ -660,7 +709,7 @@
   });
 
   // Contact form: sends through Web3Forms (no email app needed)
-  var TO = 'info@sgdev.qd.je';
+  var TO = 'bug-report@sgdev.qd.je';
   var THANKS_URL = './thanks'; // page shown after a successful send
   var form = document.getElementById('contact-form');
   form.addEventListener('submit', function (e) {
@@ -711,6 +760,71 @@
       .catch(function () { fail('Could not reach the server. Check your connection or email ' + TO + '.'); })
       .then(function () { if (!redirecting) { btn.disabled = false; label.textContent = original; } });
   });
+
+  // GitHub star: live count + "did I really star it?" check
+  var GH_REPO = 'sgdev-official/sg-neo-theme';
+  var ghHeaders = { 'Accept': 'application/vnd.github+json' };
+
+  fetch('https://api.github.com/repos/' + GH_REPO, { headers: ghHeaders })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (d && typeof d.stargazers_count === 'number') {
+        var c = document.getElementById('star-count');
+        c.textContent = '\u2605 ' + d.stargazers_count;
+        c.hidden = false;
+      }
+    })
+    .catch(function () {});
+
+  // Looks through the repo's public stargazers list (100 per page, up to 1000 stars)
+  function hasStarred(user, page) {
+    page = page || 1;
+    return fetch('https://api.github.com/repos/' + GH_REPO + '/stargazers?per_page=100&page=' + page, { headers: ghHeaders })
+      .then(function (r) {
+        if (r.status === 403 || r.status === 429) throw new Error('rate');
+        if (!r.ok) throw new Error('http');
+        return r.json();
+      })
+      .then(function (list) {
+        var found = list.some(function (u) { return u.login.toLowerCase() === user.toLowerCase(); });
+        if (found) return true;
+        if (list.length < 100) return false;
+        if (page >= 10) return null;
+        return hasStarred(user, page + 1);
+      });
+  }
+
+  var ghInput = document.getElementById('gh-user');
+  var ghBtn = document.getElementById('gh-check');
+  var ghStatus = document.getElementById('gh-status');
+  function ghNote(cls, text) { ghStatus.className = 'note ' + cls; ghStatus.textContent = text; }
+
+  function checkStar() {
+    var user = ghInput.value.trim().replace(/^@/, '');
+    if (!/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(user)) {
+      ghNote('err', 'Please enter a valid GitHub username.');
+      ghInput.focus();
+      return;
+    }
+    ghBtn.disabled = true;
+    ghNote('', 'Checking...');
+    hasStarred(user).then(function (res) {
+      if (res === true) {
+        ghNote('ok', 'Verified. Thank you for the star, @' + user + '!');
+        toast('Star verified');
+      } else if (res === false) {
+        ghNote('err', 'No star from @' + user + ' yet. Click "Give me a star", star the repo on GitHub, wait a few seconds and check again.');
+      } else {
+        ghNote('err', 'This repo has too many stars to check from the page. Look for your name in the stargazers list on GitHub.');
+      }
+    }).catch(function (err) {
+      ghNote('err', err && err.message === 'rate'
+        ? 'GitHub is limiting requests right now. Please try again in a few minutes.'
+        : 'Could not reach GitHub. Please try again.');
+    }).then(function () { ghBtn.disabled = false; });
+  }
+  ghBtn.addEventListener('click', checkStar);
+  ghInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); checkStar(); } });
 </script>
 </body>
 </html>
