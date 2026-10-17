@@ -28,6 +28,7 @@
     --c: #00E5FF;
     --p: #FF007F;
     --y: #FFD700;
+    --y-t: #FFD700;
     --g-t: #00FF41;   /* neon colors used as text */
     --c-t: #00E5FF;
     --p-t: #FF4FA3;
@@ -44,6 +45,7 @@
     --g-t: #007A20;
     --c-t: #00697C;
     --p-t: #C4005A;
+    --y-t: #7A5F00;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -105,6 +107,9 @@
   .btn-c:hover { background: var(--c); color: #000; border-color: var(--c); box-shadow: 0 0 22px rgba(0,229,255,.45); }
   .btn-p { color: var(--p-t); border-color: color-mix(in srgb, var(--p-t) 45%, transparent); background: color-mix(in srgb, var(--p-t) 8%, transparent); }
   .btn-p:hover { background: var(--p); color: #000; border-color: var(--p); box-shadow: 0 0 22px rgba(255,0,127,.45); }
+  .btn-y { color: var(--y-t); border-color: color-mix(in srgb, var(--y-t) 45%, transparent); background: color-mix(in srgb, var(--y-t) 8%, transparent); }
+  .btn-y:hover { background: var(--y); color: #000; border-color: var(--y); box-shadow: 0 0 22px rgba(255,215,0,.4); }
+  .btn:disabled { opacity: .6; cursor: wait; }
   .btn-ghost { border-color: var(--line); color: var(--muted); font-size: .78rem; padding: 8px 12px; }
   .btn-ghost:hover { border-color: var(--g-t); color: var(--g-t); }
   .btn-sm { padding: 8px 16px; font-size: .8rem; }
@@ -259,6 +264,9 @@
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--g-t); box-shadow: 0 0 0 3px color-mix(in srgb, var(--g-t) 22%, transparent); }
   .form-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   #form-status { margin: 0; font-size: .85rem; color: var(--muted); min-height: 1.4em; }
+  #form-status.ok { color: var(--g-t); }
+  #form-status.err { color: var(--p-t); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
   /* ---------- Footer ---------- */
   footer { border-top: 1px solid var(--line); padding: 32px 0; font: .8rem var(--mono); color: var(--muted); }
@@ -361,6 +369,10 @@
               <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>
               Install .vsix
             </a>
+            <a class="btn btn-y" href="sg-neo-theme.xml" download>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5zM14 3v5h5M9 13h6M9 17h6"/></svg>
+              Install for Notepad++
+            </a>
             <a class="btn btn-p" href="#install">
               <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg>
               How to install
@@ -432,7 +444,8 @@
       <div class="tabs" role="tablist" aria-label="Install method">
         <button class="tab" role="tab" id="tab-lib" aria-controls="panel-lib" aria-selected="true" type="button">VS Code library</button>
         <button class="tab" role="tab" id="tab-vsix" aria-controls="panel-vsix" aria-selected="false" tabindex="-1" type="button">.vsix file</button>
-        <button class="tab" role="tab" id="tab-other" aria-controls="panel-other" aria-selected="false" tabindex="-1" type="button">Other editors</button>
+        <button class="tab" role="tab" id="tab-npp" aria-controls="panel-npp" aria-selected="false" tabindex="-1" type="button">Notepad++</button>
+        <button class="tab" role="tab" id="tab-ovsx" aria-controls="panel-ovsx" aria-selected="false" tabindex="-1" type="button">Open VSX</button>
       </div>
 
       <!-- VS Code library -->
@@ -467,17 +480,31 @@
         </div>
       </div>
 
-      <!-- Other editors -->
-      <div class="panel" id="panel-other" role="tabpanel" aria-labelledby="tab-other" hidden>
+      <!-- Notepad++ -->
+      <div class="panel" id="panel-npp" role="tabpanel" aria-labelledby="tab-npp" hidden>
         <ol class="steps">
-          <li><p><b>VSCodium, Gitpod, Eclipse Theia:</b> install SG Neo from Open VSX with the button on the right.</p></li>
-          <li><p><b>Notepad++:</b> download the XML file and copy it into the <span style="font-family:var(--mono)">themes</span> folder, usually <span style="font-family:var(--mono)">%APPDATA%\Notepad++\themes</span>.</p></li>
-          <li><p>Restart Notepad++, open <b>Settings</b>, then <b>Style Configurator</b>, and select <b>SG Neo</b> from the theme list.</p></li>
+          <li><p>Download <span style="font-family:var(--mono)">sg-neo-theme.xml</span> with the button on the right.</p></li>
+          <li><p>Copy it into the Notepad++ <span style="font-family:var(--mono)">themes</span> folder, usually <span style="font-family:var(--mono)">%APPDATA%\Notepad++\themes</span>. Create the folder if it does not exist.</p></li>
+          <li><p>Restart Notepad++, open <b>Settings</b>, then <b>Style Configurator</b>, pick <b>SG Neo</b> from the theme list and click <b>Save &amp; Close</b>.</p></li>
         </ol>
         <div class="aside">
-          <h3>Open VSX and Notepad++</h3>
+          <h3>Notepad++ theme</h3>
+          <p>One XML file. No installer needed.</p>
+          <a class="btn btn-y" href="sg-neo-theme.xml" download>Install for Notepad++</a>
+        </div>
+      </div>
+
+      <!-- Open VSX -->
+      <div class="panel" id="panel-ovsx" role="tabpanel" aria-labelledby="tab-ovsx" hidden>
+        <ol class="steps">
+          <li><p>Open the Open VSX page with the button on the right.</p></li>
+          <li><p>VSCodium, Gitpod and Eclipse Theia read from Open VSX. Open their Extensions panel, search for <b>SG Neo Theme</b> and click <b>Install</b>.</p></li>
+          <li><p>Choose <b>SG Neo</b> as your color theme.</p></li>
+        </ol>
+        <div class="aside">
+          <h3>Open VSX registry</h3>
+          <p>For editors that do not use the Microsoft marketplace.</p>
           <a class="btn btn-p" href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" rel="noopener">View on Open VSX</a>
-          <a class="btn btn-c" href="sg-neo-theme.xml" download>Download Notepad++ .xml</a>
         </div>
       </div>
     </div>
@@ -490,7 +517,7 @@
       <div>
         <div class="section-head" style="margin-bottom:0">
           <h2>Found a bug or want a color changed?</h2>
-          <p>Send a message and your email app opens with it ready to send. You can also reach me directly:</p>
+          <p>Fill in the form and your message lands straight in my inbox. No email app needed. You can also reach me directly:</p>
         </div>
 
         <ul class="links">
@@ -521,7 +548,11 @@
         </ul>
       </div>
 
-      <form id="contact-form" novalidate>
+      <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
+        <input type="hidden" name="access_key" value="57196257-81be-4a29-b6d8-29a50fd4c781">
+        <input type="hidden" name="from_name" value="SG Neo website">
+        <input type="hidden" name="subject" id="f-subject" value="[SG Neo] New message">
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="row2">
           <label>Your name
             <input type="text" id="f-name" name="name" autocomplete="name" required>
@@ -628,30 +659,50 @@
     });
   });
 
-  // Contact form: opens the visitor's email app with the message filled in
+  // Contact form: sends through Web3Forms (no email app needed)
   var TO = 'info@sgdev.qd.je';
-  document.getElementById('contact-form').addEventListener('submit', function (e) {
+  var form = document.getElementById('contact-form');
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = document.getElementById('f-name');
     var email = document.getElementById('f-email');
     var msg = document.getElementById('f-msg');
     var status = document.getElementById('form-status');
+    var btn = form.querySelector('button[type="submit"]');
 
-    if (!name.value.trim() || !email.value.trim() || !msg.value.trim()) {
-      status.textContent = 'Please fill in your name, email and message.';
-      (name.value.trim() ? (email.value.trim() ? msg : email) : name).focus();
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-      status.textContent = 'That email address does not look right.';
-      email.focus();
-      return;
+    function fail(text, field) {
+      status.className = 'err';
+      status.textContent = text;
+      if (field) field.focus();
     }
 
-    var subject = '[SG Neo] ' + document.getElementById('f-topic').value;
-    var body = msg.value.trim() + '\r\n\r\n' + name.value.trim() + '\r\n' + email.value.trim();
-    window.location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-    status.textContent = 'Opening your email app. If nothing opens, email ' + TO + ' directly.';
+    if (!name.value.trim()) return fail('Please enter your name.', name);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) return fail('Please enter a valid email address.', email);
+    if (!msg.value.trim()) return fail('Please write a message.', msg);
+
+    document.getElementById('f-subject').value = '[SG Neo] ' + document.getElementById('f-topic').value + ' from ' + name.value.trim();
+
+    var label = btn.lastChild;
+    var original = label.textContent;
+    btn.disabled = true;
+    label.textContent = ' Sending...';
+    status.className = '';
+    status.textContent = '';
+
+    fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data && data.success) {
+          form.reset();
+          status.className = 'ok';
+          status.textContent = 'Message sent. Thank you, I will reply by email.';
+          toast('Message sent');
+        } else {
+          fail((data && data.message ? data.message : 'Something went wrong.') + ' You can also email ' + TO + '.');
+        }
+      })
+      .catch(function () { fail('Could not reach the server. Check your connection or email ' + TO + '.'); })
+      .then(function () { btn.disabled = false; label.textContent = original; });
   });
 </script>
 </body>
