@@ -1,590 +1,658 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SG Neo Theme | Official sgdev Theme for VS Code & Notepad++</title>
-    <!-- Favicon link pointing to favicon.svg -->
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SG Neo Theme | Neon dark theme for VS Code and Notepad++</title>
+<meta name="description" content="SG Neo is a high-contrast neon-on-black theme for VS Code and Notepad++ by sgdev. Install from the VS Code library or download the .vsix.">
+<meta name="theme-color" content="#07080A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0A0A'/%3E%3Crect x='3' y='3' width='58' height='58' rx='11' fill='none' stroke='%2300FF41' stroke-width='3'/%3E%3Ctext x='32' y='46' font-family='monospace' font-size='38' font-weight='700' text-anchor='middle' fill='%2300FF41'%3EN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        neoBg: '#0A0A0A',
-                        neoCard: '#121212',
-                        neoGreen: '#00FF41',
-                        neoCyan: '#00E5FF',
-                        neoPink: '#FF007F',
-                        neoGold: '#FFD700',
-                        neoText: '#E0E0E0'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
+<script>
+  // Apply saved theme before paint (no flash)
+  try { var t = localStorage.getItem('sgneo-theme'); if (t === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+</script>
 
-    <style>
-        /* Custom Neon Glows & Animations */
-        body {
-            background-color: #0A0A0A;
-            color: #E0E0E0;
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+<style>
+  :root {
+    --bg: #07080A;
+    --panel: #0E1116;
+    --panel-2: #12161C;
+    --line: #202731;
+    --text: #E6E8EB;
+    --muted: #8B95A1;
+    --g: #00FF41;
+    --c: #00E5FF;
+    --p: #FF007F;
+    --y: #FFD700;
+    --g-t: #00FF41;   /* neon colors used as text */
+    --c-t: #00E5FF;
+    --p-t: #FF4FA3;
+    --mono: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  [data-theme="light"] {
+    --bg: #F4F5F6;
+    --panel: #FFFFFF;
+    --panel-2: #EEF0F2;
+    --line: #D6DADF;
+    --text: #14171A;
+    --muted: #4F5A66;
+    --g-t: #007A20;
+    --c-t: #00697C;
+    --p-t: #C4005A;
+  }
 
-        /* Light Mode Contrast Fixes */
-        body.light-mode {
-            background-color: #F4F4F5 !important;
-            color: #18181B !important;
-        }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    transition: background-color .3s ease, color .3s ease;
+  }
+  a { color: inherit; }
+  img, svg { max-width: 100%; }
+  :focus-visible { outline: 2px solid var(--c-t); outline-offset: 3px; border-radius: 6px; }
+  ::selection { background: var(--g); color: #000; }
+  ::-webkit-scrollbar { width: 9px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--g-t); border-radius: 5px; }
 
-        body.light-mode .scanlines {
-            background: none !important;
-        }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .i { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 
-        body.light-mode .bg-neoCard {
-            background-color: #FFFFFF !important;
-            border-color: #E4E4E7 !important;
-            color: #18181B !important;
-        }
+  /* ---------- Header ---------- */
+  .site-header {
+    position: sticky; top: 0; z-index: 30;
+    background: var(--bg);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header .wrap { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand-mark {
+    width: 36px; height: 36px; border-radius: 10px; background: #0A0A0A;
+    border: 1.5px solid var(--g); color: var(--g);
+    display: grid; place-items: center; font: 700 1.2rem var(--mono);
+    box-shadow: 0 0 14px rgba(0,255,65,.25);
+  }
+  .brand-name { font: 700 1.05rem var(--mono); letter-spacing: .01em; }
+  .brand-sub { display: block; font-size: .72rem; color: var(--muted); font-family: var(--mono); line-height: 1.1; }
+  .nav { display: flex; align-items: center; gap: 28px; font-size: .92rem; font-weight: 500; }
+  .nav a { text-decoration: none; color: var(--muted); transition: color .2s; }
+  .nav a:hover { color: var(--g-t); }
+  .header-actions { display: flex; align-items: center; gap: 10px; }
 
-        body.light-mode .text-gray-400, 
-        body.light-mode .text-gray-300 {
-            color: #52525B !important;
-        }
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    padding: 11px 20px; border-radius: 10px; border: 1px solid transparent;
+    font: 600 .86rem var(--mono); text-decoration: none; cursor: pointer;
+    transition: background .2s, color .2s, box-shadow .2s, border-color .2s, transform .15s;
+    background: none; color: var(--text);
+  }
+  .btn:active { transform: scale(.97); }
+  .btn-solid { background: var(--g); color: #000; box-shadow: 0 6px 22px -6px rgba(0,255,65,.5); }
+  .btn-solid:hover { background: #4dff75; }
+  .btn-c { color: var(--c-t); border-color: color-mix(in srgb, var(--c-t) 45%, transparent); background: color-mix(in srgb, var(--c-t) 8%, transparent); }
+  .btn-c:hover { background: var(--c); color: #000; border-color: var(--c); box-shadow: 0 0 22px rgba(0,229,255,.45); }
+  .btn-p { color: var(--p-t); border-color: color-mix(in srgb, var(--p-t) 45%, transparent); background: color-mix(in srgb, var(--p-t) 8%, transparent); }
+  .btn-p:hover { background: var(--p); color: #000; border-color: var(--p); box-shadow: 0 0 22px rgba(255,0,127,.45); }
+  .btn-ghost { border-color: var(--line); color: var(--muted); font-size: .78rem; padding: 8px 12px; }
+  .btn-ghost:hover { border-color: var(--g-t); color: var(--g-t); }
+  .btn-sm { padding: 8px 16px; font-size: .8rem; }
 
-        body.light-mode .text-white {
-            color: #09090B !important;
-        }
+  /* Main install button: spinning neon border + shine sweep */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shine { 0% { left: -60%; } 55%, 100% { left: 140%; } }
+  .cta { position: relative; display: inline-block; padding: 3px; border-radius: 18px; overflow: hidden; text-decoration: none; }
+  .cta::before {
+    content: ""; position: absolute; inset: -150%;
+    background: conic-gradient(from 0deg, #00FF41, #00E5FF, #FF007F, #FFD700, #00FF41);
+    animation: spin 3.2s linear infinite;
+  }
+  .cta-inner {
+    position: relative; display: flex; align-items: center; gap: 16px;
+    padding: 16px 28px; border-radius: 15px; background: #050505; color: #00FF41; overflow: hidden;
+    transition: background .25s, color .25s;
+  }
+  .cta-inner::after {
+    content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.32), transparent);
+    transform: skewX(-20deg); animation: shine 3.4s ease-in-out infinite;
+  }
+  .cta:hover .cta-inner { background: #00FF41; color: #000; }
+  .cta:active { transform: scale(.98); }
+  .cta-icon { width: 1.9rem; height: 1.9rem; }
+  .cta-text { display: block; text-align: left; line-height: 1.2; }
+  .cta-small { display: block; font: 500 .72rem var(--mono); opacity: .7; }
+  .cta-big { display: block; font: 700 1.2rem var(--mono); }
 
-        body.light-mode header {
-            background-color: rgba(255, 255, 255, 0.8) !important;
-            border-color: #E4E4E7 !important;
-        }
+  /* ---------- Hero ---------- */
+  .hero { position: relative; padding: 72px 0 88px; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; right: -10%; top: -20%; width: 640px; height: 640px; pointer-events: none;
+    background: radial-gradient(circle, rgba(0,255,65,.13), transparent 62%);
+  }
+  [data-theme="light"] .hero::before { background: radial-gradient(circle, rgba(0,255,65,.2), transparent 62%); }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+  h1 {
+    margin: 0 0 20px; font: 700 clamp(2.4rem, 5.4vw, 4.1rem)/1.04 var(--mono);
+    letter-spacing: -.03em;
+  }
+  .lede { margin: 0 0 32px; max-width: 46ch; color: var(--muted); font-size: 1.08rem; }
+  .hero-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .hero-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .status { display: flex; align-items: center; gap: 10px; margin-top: 26px; font: 500 .8rem var(--mono); color: var(--muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--g); box-shadow: 0 0 10px var(--g); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  .linkbox {
+    margin-top: 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    max-width: 420px; padding: 8px 8px 8px 14px; border: 1px solid var(--line); border-radius: 12px;
+    background: var(--panel); font: .82rem var(--mono); color: var(--muted);
+  }
+  .linkbox b { color: var(--g-t); font-weight: 500; margin-right: 8px; }
 
-        .glow-green {
-            text-shadow: 0 0 10px rgba(0, 255, 65, 0.6), 0 0 20px rgba(0, 255, 65, 0.3);
-        }
+  /* Editor preview (always dark: it shows the theme itself) */
+  .editor {
+    background: #0A0A0A; border: 1px solid #1d2a22; border-radius: 14px; overflow: hidden;
+    font: .86rem var(--mono); color: #00FF41;
+    box-shadow: 0 0 0 1px rgba(0,255,65,.06), 0 40px 90px -30px rgba(0,255,65,.28);
+  }
+  .editor-bar { display: flex; align-items: center; gap: 7px; padding: 10px 14px; background: #0E1116; border-bottom: 1px solid #1a2128; }
+  .editor-bar i { width: 10px; height: 10px; border-radius: 50%; background: #2a323b; }
+  .editor-tab { margin-left: 14px; padding: 3px 4px; color: #00FF41; border-bottom: 2px solid #00FF41; font-size: .78rem; }
+  .code { padding: 18px 0; counter-reset: l; min-height: 276px; }
+  .ln {
+    display: flex; gap: 20px; padding: 0 20px; line-height: 1.85; white-space: pre; border-left: 2px solid transparent;
+    opacity: 0; animation: appear .4s ease forwards; animation-delay: calc(var(--i) * 110ms + 300ms);
+  }
+  .ln::before { counter-increment: l; content: counter(l); width: 1.6ch; text-align: right; color: #3b4852; flex: none; }
+  .ln.hl { background: rgba(0,255,65,.06); border-left-color: #00FF41; }
+  @keyframes appear { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+  .cm { color: #5c6b75; font-style: italic; }
+  .k { color: #FF007F; }
+  .s { color: #FFD700; }
+  .n { color: #00E5FF; }
+  .caret { display: inline-block; width: .6ch; height: 1.15em; background: #00FF41; vertical-align: text-bottom; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .editor-status { display: flex; justify-content: space-between; gap: 12px; padding: 5px 14px; background: #00FF41; color: #000; font-size: .72rem; font-weight: 600; }
 
-        .glow-box-green {
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.25), inset 0 0 15px rgba(0, 255, 65, 0.1);
-        }
+  /* ---------- Sections ---------- */
+  .section { padding: 88px 0; border-top: 1px solid var(--line); scroll-margin-top: 68px; }
+  .section-head { margin-bottom: 40px; max-width: 60ch; }
+  h2 { margin: 0 0 12px; font: 700 clamp(1.6rem, 3vw, 2.1rem)/1.15 var(--mono); letter-spacing: -.02em; }
+  .section-head p { margin: 0; color: var(--muted); }
 
-        .cyber-border {
-            border: 1px solid rgba(0, 255, 65, 0.3);
-            transition: all 0.3s ease;
-        }
+  /* Palette strip */
+  .strip { display: flex; height: 190px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .sw {
+    flex: var(--w) 1 0; min-width: 0; border: 0; padding: 18px; cursor: pointer; text-align: left;
+    display: flex; flex-direction: column; justify-content: flex-end; gap: 2px;
+    background: var(--c); color: #000; font-family: var(--mono);
+    transition: flex-grow .4s cubic-bezier(.2,.8,.2,1);
+  }
+  .sw:hover, .sw:focus-visible { flex-grow: 4; }
+  .sw b { font-size: .95rem; font-weight: 600; }
+  .sw span { font-size: .8rem; opacity: .8; }
+  .sw-bg { --w: 3; background: #0A0A0A; color: #E6E8EB; }
+  .sw-main { --w: 1.4; background: #00FF41; }
+  .sw-num { --w: 1.4; background: #00E5FF; }
+  .sw-key { --w: 1.4; background: #FF007F; }
+  .strip-note { margin: 14px 0 0; font-size: .85rem; color: var(--muted); }
 
-        .cyber-border:hover {
-            border-color: #00FF41;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
-        }
+  /* Install tabs */
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+  .tab {
+    background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    padding: 12px 18px; color: var(--muted); font: 600 .88rem var(--mono); cursor: pointer; white-space: nowrap;
+    transition: color .2s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { color: var(--g-t); border-bottom-color: var(--g-t); }
+  .panel { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; padding: 36px 0 0; }
+  .panel[hidden] { display: none; }
+  .steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 30px 1fr; gap: 16px; padding: 0 0 20px; position: relative; }
+  .steps li::before {
+    content: counter(s); width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%;
+    border: 1px solid var(--g-t); color: var(--g-t); font: 600 .78rem var(--mono); background: var(--bg); z-index: 1;
+  }
+  .steps li:not(:last-child)::after { content: ""; position: absolute; left: 13.5px; top: 28px; bottom: 0; width: 1px; background: var(--line); }
+  .steps p { margin: 3px 0 0; }
+  kbd { padding: 1px 7px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel-2); font: .78rem var(--mono); }
+  .aside { align-self: start; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); display: flex; flex-direction: column; gap: 14px; }
+  .aside h3 { margin: 0; font: 700 1rem var(--mono); }
+  .aside p { margin: 0; color: var(--muted); font-size: .92rem; }
+  .cmd {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 10px 10px 10px 14px; border-radius: 10px; border: 1px solid #1d2a22; background: #0A0A0A; color: #00FF41; font: .8rem var(--mono);
+  }
+  .cmd code { overflow-x: auto; white-space: nowrap; }
 
-        /* Scanline Background Overlay */
-        .scanlines {
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.25) 50%
-            ), linear-gradient(
-                90deg,
-                rgba(255, 0, 0, 0.03),
-                rgba(0, 255, 0, 0.01),
-                rgba(0, 0, 255, 0.03)
-            );
-            background-size: 100% 4px, 6px 100%;
-        }
+  /* Contact */
+  .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 56px; align-items: start; }
+  .links { list-style: none; margin: 28px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .links a, .links button {
+    width: 100%; display: flex; align-items: center; gap: 14px; padding: 16px 4px; border: 0; border-bottom: 1px solid var(--line);
+    background: none; color: var(--text); text-decoration: none; text-align: left; font: inherit; cursor: pointer;
+    transition: color .2s, padding-left .25s;
+  }
+  .links a:hover, .links button:hover { color: var(--g-t); padding-left: 12px; }
+  .links small { display: block; color: var(--muted); font: .76rem var(--mono); }
+  .links .i { width: 1.3em; height: 1.3em; color: var(--c-t); }
+  form { padding: 28px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); display: grid; gap: 18px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label { display: grid; gap: 7px; font: 600 .82rem var(--mono); }
+  input, select, textarea {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel-2); color: var(--text);
+    font: 400 .95rem var(--sans); transition: border-color .2s, box-shadow .2s;
+  }
+  textarea { resize: vertical; min-height: 130px; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--g-t); box-shadow: 0 0 0 3px color-mix(in srgb, var(--g-t) 22%, transparent); }
+  .form-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  #form-status { margin: 0; font-size: .85rem; color: var(--muted); min-height: 1.4em; }
 
-        /* Cool Install Button: animated gradient border + shine sweep */
-        @keyframes borderSpin { to { transform: rotate(360deg); } }
-        @keyframes shine { 0% { left: -60%; } 60%, 100% { left: 130%; } }
-        @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 32px 0; font: .8rem var(--mono); color: var(--muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 22px; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--g-t); }
 
-        .install-wrap {
-            position: relative;
-            display: inline-block;
-            padding: 3px;
-            border-radius: 18px;
-            overflow: hidden;
-            animation: floaty 3.5s ease-in-out infinite;
-        }
-        .install-wrap::before {
-            content: "";
-            position: absolute;
-            inset: -150%;
-            background: conic-gradient(from 0deg, #00FF41, #00E5FF, #FF007F, #FFD700, #00FF41);
-            animation: borderSpin 3s linear infinite;
-        }
-        .install-btn {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 32px;
-            border-radius: 15px;
-            background: #050505;
-            color: #00FF41;
-            font-family: 'Fira Code', monospace;
-            font-weight: 800;
-            font-size: 1.05rem;
-            overflow: hidden;
-            transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
-        }
-        .install-btn::after {
-            content: "";
-            position: absolute;
-            top: 0; left: -60%;
-            width: 40%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
-            transform: skewX(-20deg);
-            animation: shine 3s ease-in-out infinite;
-        }
-        .install-wrap:hover .install-btn { background: #00FF41; color: #000; }
-        .install-wrap:active { transform: scale(0.97); }
+  /* Toast */
+  .toast {
+    position: fixed; right: 20px; top: 84px; z-index: 50; padding: 12px 18px; border-radius: 12px;
+    background: #0A0A0A; color: #00FF41; border: 1px solid #00FF41; font: 600 .82rem var(--mono);
+    transform: translateY(-20px); opacity: 0; pointer-events: none; transition: transform .3s, opacity .3s;
+  }
+  .toast.show { transform: none; opacity: 1; }
 
-        /* Modal */
-        #howto-modal.open { opacity: 1; pointer-events: auto; }
-        #howto-modal.open #howto-panel { transform: translateY(0) scale(1); }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0A0A0A;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #00FF41;
-            border-radius: 4px;
-        }
-    </style>
+  /* ---------- Responsive ---------- */
+  @media (max-width: 880px) {
+    .hero { padding: 48px 0 64px; }
+    .hero-grid, .panel, .contact-grid { grid-template-columns: 1fr; }
+    .hero-grid { gap: 40px; }
+    .contact-grid { gap: 36px; }
+    .nav { display: none; }
+    .brand-sub { display: none; }
+    .section { padding: 64px 0; }
+    .strip { flex-direction: column; height: auto; }
+    .sw { flex: none; min-height: 84px; flex-direction: row; align-items: flex-end; justify-content: space-between; }
+    .sw:hover, .sw:focus-visible { flex-grow: 0; }
+    .cta-inner { padding: 14px 20px; }
+    .cta-big { font-size: 1.02rem; }
+  }
+  @media (max-width: 520px) {
+    .wrap { padding: 0 18px; }
+    .row2 { grid-template-columns: 1fr; }
+    form { padding: 20px; }
+    #theme-label { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .ln { opacity: 1; }
+  }
+</style>
 </head>
-<body id="body-root" class="min-h-screen flex flex-col justify-between scanlines selection:bg-neoGreen selection:text-black">
 
-    <!-- How to Install Modal -->
-    <div id="howto-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeHowTo()">
-        <div id="howto-panel" class="bg-neoCard border border-neoGreen/40 rounded-2xl w-full max-w-2xl max-h-[88vh] overflow-y-auto shadow-2xl glow-box-green transform translate-y-6 scale-95 transition-transform duration-300">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 sticky top-0 bg-neoCard z-10">
-                <h3 class="font-mono font-extrabold text-white text-lg">HOW TO <span class="text-neoGreen">INSTALL</span></h3>
-                <button onclick="closeHowTo()" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-neoPink/20 border border-white/10 text-gray-300 hover:text-neoPink transition-colors" aria-label="Close">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
+<body>
 
-            <div class="p-6 space-y-8 text-left">
-                <!-- Method 1 -->
-                <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="px-2.5 py-0.5 rounded-full bg-neoGreen text-black font-mono font-bold text-[10px] uppercase">Method 1</span>
-                        <h4 class="font-mono font-bold text-white">From VS Code Library</h4>
-                    </div>
-                    <ol class="space-y-2 text-sm text-gray-300 list-decimal list-inside">
-                        <li>Click <b class="text-neoGreen">Install from VS Code Library</b> and open the store page.</li>
-                        <li>Or in VS Code press <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 font-mono text-xs">Ctrl+Shift+X</kbd> and search <span class="font-mono text-neoCyan">SG Neo Theme</span>.</li>
-                        <li>Click <b>Install</b>.</li>
-                        <li>Press <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 font-mono text-xs">Ctrl+K</kbd> <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 font-mono text-xs">Ctrl+T</kbd> and pick <span class="font-mono text-neoGreen">SG Neo</span>.</li>
-                    </ol>
-                </div>
+<div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
 
-                <!-- Method 2 -->
-                <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="px-2.5 py-0.5 rounded-full bg-neoCyan text-black font-mono font-bold text-[10px] uppercase">Method 2</span>
-                        <h4 class="font-mono font-bold text-white">From .vsix file</h4>
-                    </div>
-                    <ol class="space-y-2 text-sm text-gray-300 list-decimal list-inside">
-                        <li>Click <b class="text-neoCyan">Install .vsix</b> to download <span class="font-mono">sg-neo-theme.vsix</span>.</li>
-                        <li>In VS Code open Extensions (<kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 font-mono text-xs">Ctrl+Shift+X</kbd>).</li>
-                        <li>Click the <b>&hellip;</b> menu (top right of the panel) and choose <b>Install from VSIX&hellip;</b></li>
-                        <li>Select the downloaded file, then pick the theme with <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 font-mono text-xs">Ctrl+K</kbd> <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 font-mono text-xs">Ctrl+T</kbd>.</li>
-                    </ol>
+<header class="site-header">
+  <div class="wrap">
+    <a href="#top" class="brand" aria-label="SG Neo home">
+      <span class="brand-mark">N</span>
+      <span>
+        <span class="brand-name">SG Neo</span>
+        <span class="brand-sub">by sgdev</span>
+      </span>
+    </a>
 
-                    <p class="text-xs text-gray-400 mt-4 mb-2 font-mono">Or use the terminal:</p>
-                    <div class="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 flex items-center justify-between font-mono text-xs sm:text-sm">
-                        <div class="overflow-x-auto whitespace-nowrap text-gray-300 pl-1">
-                            <span class="text-neoGreen">$</span> code --install-extension sg-neo-theme.vsix
-                        </div>
-                        <button onclick="copyCommand('code --install-extension sg-neo-theme.vsix')" class="ml-3 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-neoCyan border border-neoCyan/30 rounded-lg transition-colors flex items-center gap-1.5 shrink-0">
-                            <i class="fa-regular fa-copy"></i>
-                            <span>Copy</span>
-                        </button>
-                    </div>
-                </div>
+    <nav class="nav" aria-label="Main">
+      <a href="#install">Install</a>
+      <a href="#palette">Palette</a>
+      <a href="#contact">Contact</a>
+    </nav>
 
-                <!-- Other editors -->
-                <div class="text-xs text-gray-400 font-mono border-t border-white/10 pt-4">
-                    Using VSCodium or Gitpod? Install from <a href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" class="text-neoPink hover:underline">Open VSX</a>. Notepad++ users: download the XML and import it via <span class="text-neoCyan">Settings &rarr; Style Configurator</span>.
-                </div>
-            </div>
-        </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" id="theme-btn" type="button" aria-label="Switch between dark and light page">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
+        <span id="theme-label">Dark</span>
+      </button>
+      <a href="https://vs-11.sgdev.qd.je" target="_blank" rel="noopener" class="btn btn-solid btn-sm">Get SG Neo</a>
     </div>
+  </div>
+</header>
 
-    <!-- Toast Notification for Copy -->
-    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-150%] opacity-0 transition-all duration-300 bg-neoCard border border-neoGreen text-neoGreen px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3">
-        <i class="fa-solid fa-circle-check text-xl"></i>
-        <span id="toast-msg" class="font-mono text-sm font-semibold">Copied to Clipboard!</span>
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+
+      <div>
+        <h1>Neon code on pure black.</h1>
+        <p class="lede">SG Neo is a high-contrast dark theme for VS Code and Notepad++. Bright tokens, a true black background, and nothing that tires your eyes at 2 a.m.</p>
+
+        <div class="hero-actions">
+          <a class="cta" href="https://vs-11.sgdev.qd.je" target="_blank" rel="noopener">
+            <span class="cta-inner">
+              <svg class="i cta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
+              <span class="cta-text">
+                <span class="cta-small">Free, one click</span>
+                <span class="cta-big">Install from VS Code Library</span>
+              </span>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+            </span>
+          </a>
+
+          <div class="hero-row">
+            <a class="btn btn-c" href="sg-neo-theme.vsix" download>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>
+              Install .vsix
+            </a>
+            <a class="btn btn-p" href="#install">
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg>
+              How to install
+            </a>
+          </div>
+        </div>
+
+        <div class="linkbox">
+          <span><b>$</b>vs-11.sgdev.qd.je</span>
+          <button class="btn btn-ghost" type="button" data-copy="https://vs-11.sgdev.qd.je">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+            Copy link
+          </button>
+        </div>
+
+        <p class="status"><span class="dot" aria-hidden="true"></span> Live on the VS Code Marketplace and Open VSX</p>
+      </div>
+
+      <!-- Live preview of the theme -->
+      <div class="editor" role="img" aria-label="Preview of the SG Neo theme showing a short JavaScript file">
+        <div class="editor-bar" aria-hidden="true">
+          <i></i><i></i><i></i>
+          <span class="editor-tab">ship.js</span>
+        </div>
+        <div class="code" aria-hidden="true">
+<div class="ln" style="--i:0"><span class="cm">// night shift, 02:14</span></div>
+<div class="ln" style="--i:1"><span class="k">import</span> { coffee } <span class="k">from</span> <span class="s">"./desk"</span>;</div>
+<div class="ln" style="--i:2"> </div>
+<div class="ln" style="--i:3"><span class="k">const</span> bugs = <span class="n">3</span>;</div>
+<div class="ln" style="--i:4"> </div>
+<div class="ln" style="--i:5"><span class="k">function</span> ship(feature) {</div>
+<div class="ln" style="--i:6">  <span class="k">if</span> (bugs &gt; <span class="n">0</span>) <span class="k">return</span> fix(feature);</div>
+<div class="ln hl" style="--i:7">  <span class="k">return</span> deploy(feature);</div>
+<div class="ln" style="--i:8">}</div>
+<div class="ln" style="--i:9"><span class="caret"></span></div>
+        </div>
+        <div class="editor-status" aria-hidden="true"><span>SG Neo</span><span>JavaScript &nbsp; UTF-8 &nbsp; Ln 8, Col 24</span></div>
+      </div>
+
     </div>
+  </section>
 
-    <!-- Navigation Header -->
-    <header class="border-b border-white/10 bg-black/60 backdrop-blur-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Brand Logo & Name -->
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-black rounded-xl border border-neoGreen flex items-center justify-center glow-box-green relative overflow-hidden group">
-                    <span class="font-mono font-extrabold text-2xl text-neoGreen group-hover:scale-110 transition-transform">N</span>
-                    <div class="absolute -right-1 bottom-0 text-[10px] text-neoPink font-mono font-bold">G</div>
-                </div>
-                <div>
-                    <span class="text-xl font-extrabold tracking-wider text-white font-mono">SG<span class="text-neoGreen">.DEV</span></span>
-                    <span class="text-xs block text-gray-400 font-mono">Official Theme Release</span>
-                </div>
-            </div>
+  <!-- ================= PALETTE ================= -->
+  <section class="section" id="palette">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Four colors, one rule: bright on black.</h2>
+        <p>Every token uses a vivid color on a #0A0A0A background so code stays readable at a glance. Click a color to copy its hex.</p>
+      </div>
 
-            <!-- Links -->
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
-                <a href="#features" class="hover:text-neoGreen transition-colors">Features</a>
-                <a href="#downloads" class="hover:text-neoGreen transition-colors">Downloads</a>
-                <a href="#code-structure" class="hover:text-neoGreen transition-colors">Code Specs</a>
-                <a href="https://vs-11.sgdev.qd.je" target="_blank" class="text-neoGreen hover:underline flex items-center gap-1.5 font-bold">
-                    <i class="fa-solid fa-store"></i>
-                    <span>VS Code Store</span>
-                </a>
-            </nav>
+      <div class="strip">
+        <button class="sw sw-bg" type="button" data-copy="#0A0A0A" aria-label="Copy Background color #0A0A0A"><b>Background</b><span>#0A0A0A</span></button>
+        <button class="sw sw-main" type="button" data-copy="#00FF41" aria-label="Copy Main text color #00FF41"><b>Main text</b><span>#00FF41</span></button>
+        <button class="sw sw-num" type="button" data-copy="#00E5FF" aria-label="Copy Numbers and lines color #00E5FF"><b>Numbers and lines</b><span>#00E5FF</span></button>
+        <button class="sw sw-key" type="button" data-copy="#FF007F" aria-label="Copy Keywords color #FF007F"><b>Keywords</b><span>#FF007F</span></button>
+      </div>
+      <p class="strip-note">Strings use gold (#FFD700) and comments stay a quiet grey.</p>
+    </div>
+  </section>
 
-            <!-- Theme Toggle & Action Button -->
-            <div class="flex items-center gap-4">
-                <!-- Theme Mode Toggle Button -->
-                <button onclick="toggleThemeMode()" id="theme-btn" class="p-2.5 rounded-lg bg-white/5 border border-white/10 hover:border-neoGreen text-neoCyan transition-all flex items-center gap-2 text-xs font-mono">
-                    <i class="fa-solid fa-moon" id="theme-icon"></i>
-                    <span id="theme-text" class="hidden sm:inline">Cyber Dark</span>
-                </button>
+  <!-- ================= INSTALL ================= -->
+  <section class="section" id="install">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Install SG Neo in under a minute.</h2>
+        <p>Pick the way that fits your editor. The VS Code library is the easiest; the .vsix works offline.</p>
+      </div>
 
-                <a href="#downloads" class="px-5 py-2.5 rounded-lg bg-neoGreen text-black font-bold text-sm hover:bg-emerald-400 transition-all duration-200 shadow-lg shadow-neoGreen/20 flex items-center gap-2">
-                    <i class="fa-solid fa-download"></i>
-                    <span>Get SG Neo</span>
-                </a>
-            </div>
+      <div class="tabs" role="tablist" aria-label="Install method">
+        <button class="tab" role="tab" id="tab-lib" aria-controls="panel-lib" aria-selected="true" type="button">VS Code library</button>
+        <button class="tab" role="tab" id="tab-vsix" aria-controls="panel-vsix" aria-selected="false" tabindex="-1" type="button">.vsix file</button>
+        <button class="tab" role="tab" id="tab-other" aria-controls="panel-other" aria-selected="false" tabindex="-1" type="button">Other editors</button>
+      </div>
+
+      <!-- VS Code library -->
+      <div class="panel" id="panel-lib" role="tabpanel" aria-labelledby="tab-lib">
+        <ol class="steps">
+          <li><p>Open the store page with the button on the right, or press <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>X</kbd> in VS Code and search for <b>SG Neo Theme</b>.</p></li>
+          <li><p>Click <b>Install</b>.</p></li>
+          <li><p>Press <kbd>Ctrl</kbd> <kbd>K</kbd>, then <kbd>Ctrl</kbd> <kbd>T</kbd>, and choose <b>SG Neo</b>.</p></li>
+        </ol>
+        <div class="aside">
+          <h3>VS Code library</h3>
+          <p>Opens the SG Neo page and VS Code offers to install it.</p>
+          <a class="btn btn-solid" href="https://vs-11.sgdev.qd.je" target="_blank" rel="noopener">Install from VS Code Library</a>
         </div>
-    </header>
+      </div>
 
-    <!-- Main Hero Section -->
-    <main class="flex-grow">
-        <section class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-                
-                <!-- Availability Badge -->
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neoGreen/10 border border-neoGreen/30 text-neoGreen font-mono text-xs md:text-sm mb-8 animate-pulse">
-                    <i class="fa-solid fa-bolt"></i>
-                    <span>Live on Official VS Code Marketplace & Open VSX</span>
-                </div>
-
-                <!-- Main Cyberpunk Theme Icon Preview -->
-                <div class="mx-auto w-28 h-28 md:w-36 md:h-36 bg-black rounded-3xl border-2 border-neoGreen flex flex-col items-center justify-center glow-box-green mb-8 relative group cursor-pointer transition-transform hover:scale-105">
-                    <div class="text-6xl md:text-7xl font-extrabold font-mono text-neoGreen glow-green tracking-tighter relative">
-                        N
-                        <span class="absolute top-0 left-[-3px] text-neoCyan opacity-70 -z-10">N</span>
-                        <span class="absolute top-0 left-[3px] text-neoPink opacity-70 -z-10">N</span>
-                    </div>
-                    <div class="w-12 h-1 bg-neoCyan rounded-full mt-2"></div>
-                </div>
-
-                <!-- Hero Title & Tagline -->
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight font-mono mb-6">
-                    SG <span class="text-neoGreen glow-green">NEO</span> THEME
-                </h1>
-                <p class="max-w-2xl mx-auto text-gray-400 text-base sm:text-lg mb-10 leading-relaxed">
-                    A high-performance, minimalist cyberpunk neon-on-black theme. Specially crafted for night coders, hackers, and developers.
-                </p>
-
-                <!-- Install Buttons -->
-                <div class="mb-10 flex flex-col items-center gap-5">
-                    <!-- Main: Install from VS Code Library -->
-                    <a href="https://vs-11.sgdev.qd.je" target="_blank" rel="noopener" class="install-wrap">
-                        <span class="install-btn">
-                            <i class="fa-solid fa-puzzle-piece text-2xl"></i>
-                            <span class="text-left leading-tight">
-                                <span class="block text-[10px] uppercase tracking-[0.25em] opacity-70">Free &bull; One Click</span>
-                                <span class="block text-base sm:text-xl">Install from VS Code Library</span>
-                            </span>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
-                        </span>
-                    </a>
-
-                    <!-- Secondary: .vsix + How to install -->
-                    <div class="flex flex-wrap items-center justify-center gap-3">
-                        <a href="sg-neo-theme.vsix" download class="px-6 py-3 rounded-xl bg-neoCyan/10 hover:bg-neoCyan text-neoCyan hover:text-black border border-neoCyan/40 hover:shadow-[0_0_20px_rgba(0,229,255,0.5)] font-mono text-sm font-bold transition-all duration-200 flex items-center gap-2">
-                            <i class="fa-solid fa-box-archive"></i>
-                            <span>Install .vsix</span>
-                        </a>
-                        <button onclick="openHowTo()" class="px-6 py-3 rounded-xl bg-neoPink/10 hover:bg-neoPink text-neoPink hover:text-white border border-neoPink/40 hover:shadow-[0_0_20px_rgba(255,0,127,0.5)] font-mono text-sm font-bold transition-all duration-200 flex items-center gap-2">
-                            <i class="fa-solid fa-circle-question"></i>
-                            <span>How to Install</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Quick Terminal Copy Command -->
-                <div class="max-w-xl mx-auto mb-12 bg-neoCard border border-white/10 rounded-xl p-3 flex items-center justify-between font-mono text-xs sm:text-sm shadow-2xl">
-                    <div class="flex items-center space-x-3 overflow-x-auto text-gray-300 pl-2">
-                        <span class="text-neoGreen">$</span>
-                        <span class="whitespace-nowrap">vs-11.sgdev.qd.je</span>
-                    </div>
-                    <button onclick="copyCommand('https://vs-11.sgdev.qd.je')" class="ml-3 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-neoCyan border border-neoCyan/30 rounded-lg transition-colors flex items-center gap-1.5 shrink-0">
-                        <i class="fa-regular fa-copy"></i>
-                        <span>Copy Link</span>
-                    </button>
-                </div>
-
-                <!-- Download Buttons Grid -->
-                <div id="downloads" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto pt-6">
-                    
-                    <!-- 1. Official VS Code Marketplace Link -->
-                    <div class="bg-neoCard rounded-2xl p-6 cyber-border text-left flex flex-col justify-between relative group shadow-xl">
-                        <div class="absolute -top-3 right-4 bg-neoGreen text-black font-bold font-mono text-[10px] px-2.5 py-0.5 rounded-full uppercase">
-                            Official Store
-                        </div>
-                        <div>
-                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center text-2xl mb-4">
-                                <i class="fa-solid fa-store"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-2 font-mono">VS Code Marketplace</h3>
-                            <p class="text-gray-400 text-xs mb-6">Direct shortcut link to the official Microsoft Visual Studio Code Marketplace.</p>
-                        </div>
-                        <a href="https://vs-11.sgdev.qd.je" target="_blank" class="w-full py-3 bg-neoGreen/10 hover:bg-neoGreen text-neoGreen hover:text-black border border-neoGreen/40 rounded-xl font-mono text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            <span>vs-11.sgdev.qd.je</span>
-                        </a>
-                    </div>
-
-                    <!-- 2. Notepad++ .xml Download -->
-                    <div class="bg-neoCard rounded-2xl p-6 cyber-border text-left flex flex-col justify-between relative group shadow-xl">
-                        <div class="absolute -top-3 right-4 bg-neoCyan text-black font-bold font-mono text-[10px] px-2.5 py-0.5 rounded-full uppercase">
-                            Notepad++
-                        </div>
-                        <div>
-                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-neoGreen flex items-center justify-center text-2xl mb-4">
-                                <i class="fa-solid fa-file-code"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-2 font-mono">Notepad++ XML</h3>
-                            <p class="text-gray-400 text-xs mb-6">Importable XML style theme configuration for Notepad++ text editor.</p>
-                        </div>
-                        <a href="sg-neo-theme.xml" download class="w-full py-3 bg-neoCyan/10 hover:bg-neoCyan text-neoCyan hover:text-black border border-neoCyan/40 rounded-xl font-mono text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-file-arrow-down"></i>
-                            <span>Download .xml</span>
-                        </a>
-                    </div>
-
-                    <!-- 3. Open VSX Button -->
-                    <div class="bg-neoCard rounded-2xl p-6 cyber-border text-left flex flex-col justify-between relative group shadow-xl">
-                        <div class="absolute -top-3 right-4 bg-neoPink text-white font-bold font-mono text-[10px] px-2.5 py-0.5 rounded-full uppercase">
-                            Open Registry
-                        </div>
-                        <div>
-                            <div class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/30 text-neoPink flex items-center justify-center text-2xl mb-4">
-                                <i class="fa-solid fa-globe"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-2 font-mono">Open VSX Registry</h3>
-                            <p class="text-gray-400 text-xs mb-6">View, rate, and install directly for VSCodium, Gitpod & Open-Source IDEs.</p>
-                        </div>
-                        <a href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" class="w-full py-3 bg-neoPink/10 hover:bg-neoPink text-neoPink hover:text-white border border-neoPink/40 rounded-xl font-mono text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            <span>View Open VSX</span>
-                        </a>
-                    </div>
-
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Features Palette Section -->
-        <section id="features" class="py-16 bg-black/50 border-t border-b border-white/5">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl font-extrabold text-white font-mono">NEON <span class="text-neoGreen">PALETTE</span> SPECIFICATIONS</h2>
-                    <p class="text-gray-400 mt-2 text-sm">Designed using high contrast, vivid token colors for instant code readability.</p>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                    <div class="bg-neoCard p-5 rounded-xl border border-white/10 text-center">
-                        <div class="w-12 h-12 rounded-lg bg-[#0A0A0A] border border-white/20 mx-auto mb-3 shadow-inner"></div>
-                        <span class="block text-xs text-gray-400 font-mono">Background</span>
-                        <span class="block text-sm font-bold text-white font-mono mt-1">#0A0A0A</span>
-                    </div>
-                    <div class="bg-neoCard p-5 rounded-xl border border-white/10 text-center">
-                        <div class="w-12 h-12 rounded-lg bg-[#00FF41] mx-auto mb-3 shadow-lg shadow-neoGreen/30"></div>
-                        <span class="block text-xs text-gray-400 font-mono">Main Text</span>
-                        <span class="block text-sm font-bold text-neoGreen font-mono mt-1">#00FF41</span>
-                    </div>
-                    <div class="bg-neoCard p-5 rounded-xl border border-white/10 text-center">
-                        <div class="w-12 h-12 rounded-lg bg-[#00E5FF] mx-auto mb-3 shadow-lg shadow-neoCyan/30"></div>
-                        <span class="block text-xs text-gray-400 font-mono">Numbers / Lines</span>
-                        <span class="block text-sm font-bold text-neoCyan font-mono mt-1">#00E5FF</span>
-                    </div>
-                    <div class="bg-neoCard p-5 rounded-xl border border-white/10 text-center">
-                        <div class="w-12 h-12 rounded-lg bg-[#FF007F] mx-auto mb-3 shadow-lg shadow-neoPink/30"></div>
-                        <span class="block text-xs text-gray-400 font-mono">Keywords</span>
-                        <span class="block text-sm font-bold text-neoPink font-mono mt-1">#FF007F</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Code Structure Tabs Section -->
-        <section id="code-structure" class="py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold text-white font-mono">PROJECT <span class="text-neoGreen">STRUCTURE</span> & SPECS</h2>
-                <p class="text-gray-400 text-sm mt-2">Modular layout organized in clean HTML, CSS, JS, and SVG components.</p>
-            </div>
-
-            <!-- Custom Code Tabs View -->
-            <div class="bg-neoCard rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-                <!-- Tab Headers -->
-                <div class="flex border-b border-white/10 bg-black/40 overflow-x-auto" id="tab-headers">
-                    <button onclick="switchTab('html')" id="tab-btn-html" class="px-6 py-4 text-xs font-mono font-bold text-neoGreen border-b-2 border-neoGreen bg-white/5 flex items-center gap-2">
-                        <i class="fa-brands fa-html5 text-orange-500"></i> index.html
-                    </button>
-                    <button onclick="switchTab('css')" id="tab-btn-css" class="px-6 py-4 text-xs font-mono font-bold text-gray-400 border-b-2 border-transparent hover:text-white flex items-center gap-2">
-                        <i class="fa-brands fa-css3-alt text-blue-500"></i> style.css
-                    </button>
-                    <button onclick="switchTab('js')" id="tab-btn-js" class="px-6 py-4 text-xs font-mono font-bold text-gray-400 border-b-2 border-transparent hover:text-white flex items-center gap-2">
-                        <i class="fa-brands fa-js text-yellow-400"></i> script.js
-                    </button>
-                </div>
-
-                <!-- Tab Contents -->
-                <div class="p-6 font-mono text-xs md:text-sm text-gray-300 bg-[#0A0A0A] overflow-x-auto min-h-[200px]">
-                    <div id="tab-content-html" class="block">
-                        <pre class="text-neoGreen"><code>&lt;!-- SG Neo Web Landing Structure --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;SG Neo Theme&lt;/title&gt;
-    &lt;link rel="icon" href="favicon.svg" type="image/svg+xml"&gt;
-&lt;/head&gt;
-&lt;body class="bg-neoBlack text-neoGreen"&gt;
-    &lt;!-- Official Marketplace: https://vs-11.sgdev.qd.je --&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-                    </div>
-
-                    <div id="tab-content-css" class="hidden">
-                        <pre class="text-neoCyan"><code>/* style.css - SG Neo Cyberpunk Palette */
-:root {
-    --bg-dark: #0A0A0A;
-    --neon-green: #00FF41;
-    --neon-cyan: #00E5FF;
-    --neon-pink: #FF007F;
-}</code></pre>
-                    </div>
-
-                    <div id="tab-content-js" class="hidden">
-                        <pre class="text-neoPink"><code>// script.js - Clipboard & UI Actions
-function copyCommand(text) {
-    navigator.clipboard.writeText(text);
-    showToast('Copied: ' + text);
-}</code></pre>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="border-t border-white/10 bg-black/80 py-8 text-center text-xs font-mono text-gray-400">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-                © 2026 || Created by <a href="https://sgdev.qd.je" class="text-neoGreen hover:underline">sgdev / Shubhomoy</a>
-            </div>
-            <div class="flex items-center space-x-6">
-                <a href="https://vs-11.sgdev.qd.je" target="_blank" class="hover:text-neoGreen">VS Code Store</a>
-                <a href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" class="hover:text-neoCyan">Open VSX</a>
-                <a href="info@sgdev.qd.je" class="hover:text-neoPink">Contact</a>
-            </div>
+      <!-- .vsix -->
+      <div class="panel" id="panel-vsix" role="tabpanel" aria-labelledby="tab-vsix" hidden>
+        <ol class="steps">
+          <li><p>Download <span style="font-family:var(--mono)">sg-neo-theme.vsix</span> with the button on the right.</p></li>
+          <li><p>In VS Code open Extensions with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>X</kbd>, click the <b>&hellip;</b> menu at the top of the panel, and choose <b>Install from VSIX&hellip;</b></p></li>
+          <li><p>Select the downloaded file, then pick <b>SG Neo</b> with <kbd>Ctrl</kbd> <kbd>K</kbd>, <kbd>Ctrl</kbd> <kbd>T</kbd>.</p></li>
+        </ol>
+        <div class="aside">
+          <h3>.vsix file</h3>
+          <a class="btn btn-c" href="sg-neo-theme.vsix" download>Install .vsix</a>
+          <p>Prefer the terminal? Run this in the folder with the file:</p>
+          <div class="cmd">
+            <code>code --install-extension sg-neo-theme.vsix</code>
+            <button class="btn btn-ghost" type="button" data-copy="code --install-extension sg-neo-theme.vsix">Copy</button>
+          </div>
         </div>
-    </footer>
+      </div>
 
-    <!-- Interactive JavaScript -->
-    <script>
-        // Copy Command Function
-        function copyCommand(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('toast');
-                const toastMsg = document.getElementById('toast-msg');
-                toastMsg.innerText = "Copied to Clipboard!";
-                toast.classList.remove('translate-y-[-150%]', 'opacity-0');
-                toast.classList.add('translate-y-0', 'opacity-100');
+      <!-- Other editors -->
+      <div class="panel" id="panel-other" role="tabpanel" aria-labelledby="tab-other" hidden>
+        <ol class="steps">
+          <li><p><b>VSCodium, Gitpod, Eclipse Theia:</b> install SG Neo from Open VSX with the button on the right.</p></li>
+          <li><p><b>Notepad++:</b> download the XML file and copy it into the <span style="font-family:var(--mono)">themes</span> folder, usually <span style="font-family:var(--mono)">%APPDATA%\Notepad++\themes</span>.</p></li>
+          <li><p>Restart Notepad++, open <b>Settings</b>, then <b>Style Configurator</b>, and select <b>SG Neo</b> from the theme list.</p></li>
+        </ol>
+        <div class="aside">
+          <h3>Open VSX and Notepad++</h3>
+          <a class="btn btn-p" href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" rel="noopener">View on Open VSX</a>
+          <a class="btn btn-c" href="sg-neo-theme.xml" download>Download Notepad++ .xml</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                setTimeout(() => {
-                    toast.classList.remove('translate-y-0', 'opacity-100');
-                    toast.classList.add('translate-y-[-150%]', 'opacity-0');
-                }, 2500);
-            });
-        }
+  <!-- ================= CONTACT ================= -->
+  <section class="section" id="contact">
+    <div class="wrap contact-grid">
 
-        // How to Install Modal
-        function openHowTo() {
-            document.getElementById('howto-modal').classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeHowTo() {
-            document.getElementById('howto-modal').classList.remove('open');
-            document.body.style.overflow = '';
-        }
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeHowTo();
-        });
+      <div>
+        <div class="section-head" style="margin-bottom:0">
+          <h2>Found a bug or want a color changed?</h2>
+          <p>Send a message and your email app opens with it ready to send. You can also reach me directly:</p>
+        </div>
 
-        // Code Tabs Switcher
-        function switchTab(tab) {
-            ['html', 'css', 'js'].forEach(t => {
-                const content = document.getElementById(`tab-content-${t}`);
-                const btn = document.getElementById(`tab-btn-${t}`);
-                if (content && btn) {
-                    content.classList.add('hidden');
-                    btn.classList.remove('text-neoGreen', 'border-neoGreen', 'bg-white/5');
-                    btn.classList.add('text-gray-400', 'border-transparent');
-                }
-            });
+        <ul class="links">
+          <li>
+            <a href="mailto:info@sgdev.qd.je">
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+              <span>Email<small>info@sgdev.qd.je</small></span>
+            </a>
+          </li>
+          <li>
+            <a href="https://sgdev.qd.je" target="_blank" rel="noopener">
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>
+              <span>Portfolio<small>sgdev.qd.je</small></span>
+            </a>
+          </li>
+          <li>
+            <a href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" rel="noopener">
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>
+              <span>Open VSX reviews<small>open-vsx.org</small></span>
+            </a>
+          </li>
+          <li>
+            <button type="button" data-copy="info@sgdev.qd.je">
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+              <span>Copy email address<small>for webmail users</small></span>
+            </button>
+          </li>
+        </ul>
+      </div>
 
-            const activeContent = document.getElementById(`tab-content-${tab}`);
-            const activeBtn = document.getElementById(`tab-btn-${tab}`);
-            if (activeContent && activeBtn) {
-                activeContent.classList.remove('hidden');
-                activeBtn.classList.add('text-neoGreen', 'border-neoGreen', 'bg-white/5');
-                activeBtn.classList.remove('text-gray-400', 'border-transparent');
-            }
-        }
+      <form id="contact-form" novalidate>
+        <div class="row2">
+          <label>Your name
+            <input type="text" id="f-name" name="name" autocomplete="name" required>
+          </label>
+          <label>Your email
+            <input type="email" id="f-email" name="email" autocomplete="email" required>
+          </label>
+        </div>
+        <label>Topic
+          <select id="f-topic" name="topic">
+            <option>Bug report</option>
+            <option>Color or feature request</option>
+            <option>Question</option>
+            <option>Something else</option>
+          </select>
+        </label>
+        <label>Message
+          <textarea id="f-msg" name="message" required placeholder="What happened, or what would you like to see?"></textarea>
+        </label>
+        <div class="form-foot">
+          <button class="btn btn-solid" type="submit">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            Send message
+          </button>
+          <p id="form-status" aria-live="polite"></p>
+        </div>
+      </form>
 
-        // Dark / Light Theme Mode Toggle
-        function toggleThemeMode() {
-            const body = document.getElementById('body-root');
-            const icon = document.getElementById('theme-icon');
-            const text = document.getElementById('theme-text');
+    </div>
+  </section>
 
-            body.classList.toggle('light-mode');
+</main>
 
-            if (body.classList.contains('light-mode')) {
-                icon.className = 'fa-solid fa-sun text-yellow-500';
-                text.innerText = 'Cyber Light';
-            } else {
-                icon.className = 'fa-solid fa-moon text-neoCyan';
-                text.innerText = 'Cyber Dark';
-            }
-        }
-    </script>
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 SG Neo, made by <a href="https://sgdev.qd.je" style="color:var(--g-t)">sgdev / Shubhomoy</a>. Licensed under GNU GPL v3.</span>
+    <nav aria-label="Footer">
+      <a href="https://vs-11.sgdev.qd.je" target="_blank" rel="noopener">VS Code library</a>
+      <a href="https://open-vsx.org/extension/sgdev/sg-neo-theme" target="_blank" rel="noopener">Open VSX</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  var toastTimer;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2200);
+  }
+
+  // Copy buttons: any element with data-copy
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy') ? resolve() : reject(); } catch (e) { reject(e); }
+      document.body.removeChild(ta);
+    });
+  }
+  document.querySelectorAll('[data-copy]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var v = el.getAttribute('data-copy');
+      copyText(v).then(function () { toast('Copied ' + v); }, function () { toast('Copy failed. Select the text manually.'); });
+    });
+  });
+
+  // Dark / light page toggle
+  var root = document.documentElement;
+  var themeLabel = document.getElementById('theme-label');
+  function syncThemeLabel() { themeLabel.textContent = root.getAttribute('data-theme') === 'light' ? 'Light' : 'Dark'; }
+  syncThemeLabel();
+  document.getElementById('theme-btn').addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('sgneo-theme', next); } catch (e) {}
+    syncThemeLabel();
+  });
+
+  // Install tabs (click + arrow keys)
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  function selectTab(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { selectTab(tab); });
+    tab.addEventListener('keydown', function (e) {
+      var n = null;
+      if (e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+      if (e.key === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (n) { e.preventDefault(); selectTab(n); n.focus(); }
+    });
+  });
+
+  // Contact form: opens the visitor's email app with the message filled in
+  var TO = 'info@sgdev.qd.je';
+  document.getElementById('contact-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('f-name');
+    var email = document.getElementById('f-email');
+    var msg = document.getElementById('f-msg');
+    var status = document.getElementById('form-status');
+
+    if (!name.value.trim() || !email.value.trim() || !msg.value.trim()) {
+      status.textContent = 'Please fill in your name, email and message.';
+      (name.value.trim() ? (email.value.trim() ? msg : email) : name).focus();
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+      status.textContent = 'That email address does not look right.';
+      email.focus();
+      return;
+    }
+
+    var subject = '[SG Neo] ' + document.getElementById('f-topic').value;
+    var body = msg.value.trim() + '\r\n\r\n' + name.value.trim() + '\r\n' + email.value.trim();
+    window.location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    status.textContent = 'Opening your email app. If nothing opens, email ' + TO + ' directly.';
+  });
+</script>
 </body>
 </html>
