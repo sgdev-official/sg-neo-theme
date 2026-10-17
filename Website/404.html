@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#07080A">
+<title>404 Page not found | SG Neo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0A0A'/%3E%3Crect x='3' y='3' width='58' height='58' rx='11' fill='none' stroke='%2300FF41' stroke-width='3'/%3E%3Ctext x='32' y='46' font-family='monospace' font-size='38' font-weight='700' text-anchor='middle' fill='%2300FF41'%3EN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  try { if (localStorage.getItem('sgneo-theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+</script>
+<style>
+  :root {
+    --bg: #07080A; --panel: #0E1116; --line: #202731; --text: #E6E8EB; --muted: #8B95A1;
+    --g: #00FF41; --c: #00E5FF; --p: #FF007F; --y: #FFD700;
+    --g-t: #00FF41; --c-t: #00E5FF; --p-t: #FF4FA3;
+    --mono: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  [data-theme="light"] {
+    --bg: #F4F5F6; --panel: #FFFFFF; --line: #D6DADF; --text: #14171A; --muted: #4F5A66;
+    --g-t: #007A20; --c-t: #00697C; --p-t: #C4005A;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--c-t); outline-offset: 3px; border-radius: 6px; }
+  ::selection { background: var(--g); color: #000; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  .i { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  header { border-bottom: 1px solid var(--line); }
+  header .wrap { height: 68px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font: 700 1.05rem var(--mono); }
+  .brand-mark { width: 36px; height: 36px; border-radius: 10px; background: #0A0A0A; border: 1.5px solid var(--g); color: var(--g); display: grid; place-items: center; font: 700 1.2rem var(--mono); box-shadow: 0 0 14px rgba(0,255,65,.25); }
+
+  main { flex: 1; display: flex; align-items: center; position: relative; overflow: hidden; padding: 56px 0; }
+  main::before { content: ""; position: absolute; right: -10%; top: -10%; width: 620px; height: 620px; pointer-events: none; background: radial-gradient(circle, rgba(255,0,127,.13), transparent 62%); }
+  .grid { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  h1 { margin: 0 0 18px; font: 700 clamp(2.2rem, 5vw, 3.6rem)/1.06 var(--mono); letter-spacing: -.03em; }
+  .lede { margin: 0 0 30px; max-width: 44ch; color: var(--muted); font-size: 1.06rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 9px; padding: 12px 22px; border-radius: 10px; border: 1px solid transparent; font: 600 .86rem var(--mono); text-decoration: none; cursor: pointer; transition: background .2s, color .2s, box-shadow .2s, border-color .2s, transform .15s; }
+  .btn:active { transform: scale(.97); }
+  .btn-solid { background: var(--g); color: #000; box-shadow: 0 6px 22px -6px rgba(0,255,65,.5); }
+  .btn-solid:hover { background: #4dff75; }
+  .btn-line { color: var(--c-t); border-color: color-mix(in srgb, var(--c-t) 45%, transparent); background: color-mix(in srgb, var(--c-t) 8%, transparent); }
+  .btn-line:hover { background: var(--c); color: #000; border-color: var(--c); box-shadow: 0 0 22px rgba(0,229,255,.45); }
+
+  /* Error "terminal" (always dark, like the theme preview on the home page) */
+  .editor { background: #0A0A0A; border: 1px solid #2a1a22; border-radius: 14px; overflow: hidden; font: .86rem var(--mono); color: #00FF41; box-shadow: 0 0 0 1px rgba(255,0,127,.08), 0 40px 90px -30px rgba(255,0,127,.3); }
+  .bar { display: flex; align-items: center; gap: 7px; padding: 10px 14px; background: #0E1116; border-bottom: 1px solid #1a2128; }
+  .bar i { width: 10px; height: 10px; border-radius: 50%; background: #2a323b; }
+  .tab { margin-left: 14px; padding: 3px 4px; color: #FF007F; border-bottom: 2px solid #FF007F; font-size: .78rem; }
+  .code { padding: 18px 0; counter-reset: l; min-height: 250px; }
+  .ln { display: flex; gap: 20px; padding: 0 20px; line-height: 1.85; white-space: pre-wrap; word-break: break-all; border-left: 2px solid transparent; opacity: 0; animation: appear .4s ease forwards; animation-delay: calc(var(--i) * 170ms + 250ms); }
+  .ln::before { counter-increment: l; content: counter(l); width: 1.6ch; text-align: right; color: #3b4852; flex: none; }
+  .ln.err { background: rgba(255,0,127,.08); border-left-color: #FF007F; }
+  @keyframes appear { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+  .cm { color: #5c6b75; font-style: italic; }
+  .k { color: #FF007F; }
+  .s { color: #FFD700; }
+  .n { color: #00E5FF; }
+  .squiggle { text-decoration: underline wavy #FF007F; text-underline-offset: 4px; }
+  .caret { display: inline-block; width: .6ch; height: 1.15em; background: #00FF41; vertical-align: text-bottom; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .status { display: flex; justify-content: space-between; gap: 12px; padding: 5px 14px; background: #FF007F; color: #000; font-size: .72rem; font-weight: 600; }
+
+  footer { border-top: 1px solid var(--line); padding: 24px 0; font: .8rem var(--mono); color: var(--muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--g-t); }
+
+  @media (max-width: 880px) { .grid { grid-template-columns: 1fr; gap: 40px; } main { padding: 40px 0; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .ln { opacity: 1; } }
+</style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="SG Neo home"><span class="brand-mark">N</span> SG Neo</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap grid">
+    <div>
+      <h1>This page does not exist.</h1>
+      <p class="lede">The link may be broken or the page may have moved. Head back home to install SG Neo, or tell me about the broken link.</p>
+      <div class="actions">
+        <a class="btn btn-solid" href="/">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>
+          Back to home
+        </a>
+        <a class="btn btn-line" href="/#contact">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          Report a broken link
+        </a>
+      </div>
+    </div>
+
+    <div class="editor" role="img" aria-label="Terminal showing the error: file not found">
+      <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="tab">404.log</span></div>
+      <div class="code" aria-hidden="true">
+<div class="ln" style="--i:0"><span class="cm">// sgdev.qd.je</span></div>
+<div class="ln" style="--i:1"><span class="k">open</span> <span class="s squiggle" id="req-path">"/this-page"</span></div>
+<div class="ln err" style="--i:2"><span class="k">Error</span>: <span class="n">404</span> file not found</div>
+<div class="ln" style="--i:3"> </div>
+<div class="ln" style="--i:4"><span class="cm">// hint: check the spelling of the link,</span></div>
+<div class="ln" style="--i:5"><span class="cm">// or go back and start from the home page.</span></div>
+<div class="ln" style="--i:6"><span class="caret"></span></div>
+      </div>
+      <div class="status" aria-hidden="true"><span>1 error</span><span>Ln 3, Col 1</span></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 SG Neo, made by <a href="https://sgdev.qd.je" style="color:var(--g-t)">sgdev / Shubhomoy</a></span>
+    <a href="https://vs-11.sgdev.qd.je" target="_blank" rel="noopener">VS Code library</a>
+  </div>
+</footer>
+
+<script>
+  // Show the address the visitor actually tried to open
+  try {
+    var el = document.getElementById('req-path');
+    if (el && location.pathname && location.pathname !== '/') el.textContent = JSON.stringify(location.pathname);
+  } catch (e) {}
+</script>
+</body>
+</html>
